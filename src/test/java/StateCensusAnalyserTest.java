@@ -16,4 +16,15 @@ public class StateCensusAnalyserTest {
             System.out.println(e.getMessage());
         }
     }
+
+    @Test
+    public void givenFileLocation_WhenImProper_ShouldTrowAnExceptionMessage() {
+        try {
+            StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+            int numOfRecords = stateCensusAnalyser.loadStateCensusData("./src/main/resources/IndiaStateCensusData.csv");
+            Assert.assertEquals(29,numOfRecords);
+        } catch (CensusAnalyserException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
