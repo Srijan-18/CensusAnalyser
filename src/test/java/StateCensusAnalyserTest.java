@@ -22,9 +22,19 @@ public class StateCensusAnalyserTest {
         try {
             StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
             int numOfRecords = stateCensusAnalyser.loadStateCensusData("./src/main/resources/IndiaStateCensusData.csv");
-            Assert.assertEquals(29,numOfRecords);
         } catch (CensusAnalyserException e) {
-            System.out.println(e.getMessage());
+            Assert.assertEquals("FILE DETAILS MISMATCH",e.getMessage());
+        }
+    }
+
+    @Test
+    public void giveFileDetails_WhenTypeIncorrect_ShouldThrowAnException() {
+        StateCensusAnalyser stateCensusAnalyser=new StateCensusAnalyser();
+        try {
+            int numOfEntries=stateCensusAnalyser.loadStateCensusData(
+                                                            "./src/test/resources/IndiaStateCensusData.pdf");
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals("FILE DETAILS MISMATCH",e.getMessage());
         }
     }
 }
