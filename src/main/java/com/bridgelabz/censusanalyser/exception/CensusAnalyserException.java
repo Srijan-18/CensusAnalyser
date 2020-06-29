@@ -2,7 +2,7 @@ package com.bridgelabz.censusanalyser.exception;
 
 public class CensusAnalyserException extends Exception {
    public enum ExceptionType{
-       ENTRIES_MISMATCH;
+       IMPROPER_FILE_DETAILS;
    }
     ExceptionType type;
 

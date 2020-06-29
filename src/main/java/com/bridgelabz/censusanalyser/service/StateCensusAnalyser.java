@@ -5,6 +5,7 @@ import com.bridgelabz.censusanalyser.model.StateCensusCSV;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
@@ -25,8 +26,8 @@ public class StateCensusAnalyser {
             int numOfEntries= (int) StreamSupport.stream(stateCensusCSVIterable.spliterator(),false).count();
             return numOfEntries;
         } catch (IOException e) {
-          throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.ENTRIES_MISMATCH,
-                                            "Entries Count Mismatch");
+          throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.IMPROPER_FILE_DETAILS,
+                                            "FILE DETAILS MISMATCH");
         }
     }
 }
