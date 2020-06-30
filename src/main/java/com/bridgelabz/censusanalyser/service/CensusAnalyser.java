@@ -26,15 +26,15 @@ public class CensusAnalyser {
             Iterable<StateCensusCSV> stateCensusCSVIterable = () -> stateCensusCSVIterator;
             int numOfEntries = (int) StreamSupport.stream(stateCensusCSVIterable.spliterator(), false).count();
             return numOfEntries;
-        } catch (RuntimeException e) {
-            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.DELIMITER_MISMATCH,
-                    "DELIMITER MISMATCH");
         } catch (NoSuchFileException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.IMPROPER_FILE_DETAILS,
                     "FILE DETAILS MISMATCH");
         } catch (IOException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.INPUT_OUTPUT_EXCEPTION,
                     "ERROR IN READING FILE");
+        }catch (RuntimeException e) {
+            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.DELIMITER_MISMATCH,
+                    "DELIMITER MISMATCH/HEADER MISMATCH");
         }
     }
 
@@ -49,15 +49,15 @@ public class CensusAnalyser {
             Iterable<StateCodeCSV> stateCodeCSVIterable = () -> stateCodeCSVIterator;
             int numOfEntries = (int) StreamSupport.stream(stateCodeCSVIterable.spliterator(), false).count();
             return numOfEntries;
-        } catch (RuntimeException e) {
-            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.DELIMITER_MISMATCH,
-                    "DELIMITER MISMATCH");
         } catch (NoSuchFileException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.IMPROPER_FILE_DETAILS,
                     "FILE DETAILS MISMATCH");
         } catch (IOException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.INPUT_OUTPUT_EXCEPTION,
                     "ERROR IN READING FILE");
+        }catch (RuntimeException e) {
+            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.DELIMITER_MISMATCH,
+                "DELIMITER MISMATCH/HEADER MISMATCH");
         }
     }
 }

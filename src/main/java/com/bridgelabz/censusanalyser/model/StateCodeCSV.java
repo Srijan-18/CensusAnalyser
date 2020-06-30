@@ -6,7 +6,7 @@ public class StateCodeCSV {
     @CsvBindByName
     public Integer SrNo;
 
-    @CsvBindByName(column = "StateName", required = true)
+    @CsvBindByName(column = "State Name", required = true)
     public String StateName;
 
     @CsvBindByName
