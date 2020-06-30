@@ -16,13 +16,8 @@ import java.util.stream.StreamSupport;
 
 public class CensusAnalyser {
     public int loadStateCensusData(String csvFilePath) throws CensusAnalyserException {
-        try {
-            Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
-            CsvToBeanBuilder<StateCensusCSV> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
-            csvToBeanBuilder.withType(StateCensusCSV.class);
-            csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true).withSeparator(',');
-            CsvToBean<StateCensusCSV> csvToBean = csvToBeanBuilder.build();
-            Iterator<StateCensusCSV> stateCensusCSVIterator = csvToBean.iterator();
+        try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
+            Iterator<StateCensusCSV> stateCensusCSVIterator = this.getCSVFileIterator(reader,StateCensusCSV.class);
             Iterable<StateCensusCSV> stateCensusCSVIterable = () -> stateCensusCSVIterator;
             int numOfEntries = (int) StreamSupport.stream(stateCensusCSVIterable.spliterator(), false).count();
             return numOfEntries;
@@ -32,20 +27,12 @@ public class CensusAnalyser {
         } catch (IOException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.INPUT_OUTPUT_EXCEPTION,
                     "ERROR IN READING FILE");
-        }catch (RuntimeException e) {
-            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.DELIMITER_MISMATCH,
-                    "DELIMITER MISMATCH/HEADER MISMATCH");
         }
     }
 
     public int loadStateCodeData(String csvFilePath) throws CensusAnalyserException {
-        try {
-            Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
-            CsvToBeanBuilder<StateCodeCSV> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
-            csvToBeanBuilder.withType(StateCodeCSV.class);
-            csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true).withSeparator(',');
-            CsvToBean<StateCodeCSV> csvToBean = csvToBeanBuilder.build();
-            Iterator<StateCodeCSV> stateCodeCSVIterator = csvToBean.iterator();
+        try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
+            Iterator<StateCodeCSV> stateCodeCSVIterator = this.getCSVFileIterator(reader,StateCodeCSV.class);
             Iterable<StateCodeCSV> stateCodeCSVIterable = () -> stateCodeCSVIterator;
             int numOfEntries = (int) StreamSupport.stream(stateCodeCSVIterable.spliterator(), false).count();
             return numOfEntries;
@@ -55,9 +42,18 @@ public class CensusAnalyser {
         } catch (IOException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.INPUT_OUTPUT_EXCEPTION,
                     "ERROR IN READING FILE");
-        }catch (RuntimeException e) {
+        }
+    }
+    private <E> Iterator getCSVFileIterator(Reader reader,Class csvClass) throws CensusAnalyserException {
+        try {
+            CsvToBeanBuilder<E> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
+            csvToBeanBuilder.withType(csvClass);
+            csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true).withSeparator(',');
+            CsvToBean<E> csvToBean = csvToBeanBuilder.build();
+            return csvToBean.iterator();
+        } catch (RuntimeException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.DELIMITER_MISMATCH,
-                "DELIMITER MISMATCH/HEADER MISMATCH");
+                    "DELIMITER MISMATCH/HEADER MISMATCH");
         }
     }
 }
