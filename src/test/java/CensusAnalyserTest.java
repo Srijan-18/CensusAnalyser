@@ -52,8 +52,8 @@ public class CensusAnalyserTest {
     @Test
     public void givenFile_WhenHeaderIncorrect_ShouldThrowAnException() {
         try {
-            StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
-            int numOfRecords = stateCensusAnalyser.loadStateCensusData
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            int numOfRecords = censusAnalyser.loadStateCensusData
                     ("./src/test/resources/IndianStateCensusWithWrongHeader.csv");
         } catch (CensusAnalyserException e) {
             Assert.assertEquals("DELIMITER MISMATCH/HEADER MISMATCH", e.getMessage());
