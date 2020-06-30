@@ -24,7 +24,7 @@ public class CensusAnalyserTest {
             int numOfRecords = censusAnalyser.loadStateCensusData(
                             "./src/main/resources/IndiaStateCensusData.csv");
         } catch (CensusAnalyserException e) {
-            Assert.assertEquals("FILE DETAILS MISMATCH",e.getMessage());
+            Assert.assertEquals("FILE DETAILS MISMATCH", e.getMessage());
         }
     }
 
@@ -35,7 +35,7 @@ public class CensusAnalyserTest {
             int numOfEntries= censusAnalyser.loadStateCensusData(
                         "./src/test/resources/IndiaStateCensusData.pdf");
         } catch (CensusAnalyserException e) {
-            Assert.assertEquals("FILE DETAILS MISMATCH",e.getMessage());
+            Assert.assertEquals("FILE DETAILS MISMATCH", e.getMessage());
         }
     }
 
@@ -45,7 +45,18 @@ public class CensusAnalyserTest {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             int numOfRecords = censusAnalyser.loadStateCensusData("./src/test/resources/IndianStateCensusWrongDelimiter.csv");
         } catch (CensusAnalyserException e) {
-            Assert.assertEquals("DELIMITER MISMATCH",e.getMessage());
+            Assert.assertEquals("DELIMITER MISMATCH/HEADER MISMATCH", e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenFile_WhenHeaderIncorrect_ShouldThrowAnException() {
+        try {
+            StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+            int numOfRecords = stateCensusAnalyser.loadStateCensusData
+                    ("./src/test/resources/IndianStateCensusWithWrongHeader.csv");
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals("DELIMITER MISMATCH/HEADER MISMATCH", e.getMessage());
         }
     }
 }
