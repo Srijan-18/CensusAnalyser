@@ -48,4 +48,4 @@ public class StateCensusAnalyserTest {
             Assert.assertEquals("DELIMITER MISMATCH",e.getMessage());
         }
     }
-    }
+}
