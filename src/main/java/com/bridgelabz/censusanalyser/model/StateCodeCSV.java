@@ -16,8 +16,7 @@ public class StateCodeCSV {
     public String StateCode;
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "IndiaStateCodeCSV{" +
                 "SrNo=" + SrNo +
                 ", StateName='" + StateName + '\'' +
@@ -26,4 +25,3 @@ public class StateCodeCSV {
                 '}';
     }
 }
-
