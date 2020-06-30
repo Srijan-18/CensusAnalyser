@@ -21,7 +21,8 @@ public class StateCensusAnalyserTest {
     public void givenFileLocation_WhenImProper_ShouldTrowAnExceptionMessage() {
         try {
             StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
-            int numOfRecords = stateCensusAnalyser.loadStateCensusData("./src/main/resources/IndiaStateCensusData.csv");
+            int numOfRecords = stateCensusAnalyser.loadStateCensusData(
+                            "./src/main/resources/IndiaStateCensusData.csv");
         } catch (CensusAnalyserException e) {
             Assert.assertEquals("FILE DETAILS MISMATCH",e.getMessage());
         }
@@ -32,9 +33,19 @@ public class StateCensusAnalyserTest {
         StateCensusAnalyser stateCensusAnalyser=new StateCensusAnalyser();
         try {
             int numOfEntries=stateCensusAnalyser.loadStateCensusData(
-                                                            "./src/test/resources/IndiaStateCensusData.pdf");
+                        "./src/test/resources/IndiaStateCensusData.pdf");
         } catch (CensusAnalyserException e) {
             Assert.assertEquals("FILE DETAILS MISMATCH",e.getMessage());
         }
     }
-}
+
+    @Test
+    public void givenFileDetails_WhenDelimiterIncorrect_ShouldThrowAnException() {
+        try {
+            StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+            int numOfRecords = stateCensusAnalyser.loadStateCensusData("./src/test/resources/IndianStateCensusWrongDelimiter.csv");
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals("DELIMITER MISMATCH",e.getMessage());
+        }
+    }
+    }
