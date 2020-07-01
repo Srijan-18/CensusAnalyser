@@ -3,8 +3,6 @@ package com.bridgelabz.censusanalyser.service;
 import com.bridgelabz.censusanalyser.exception.CensusAnalyserException;
 import com.bridgelabz.censusanalyser.model.StateCensusCSV;
 import com.bridgelabz.censusanalyser.model.StateCodeCSV;
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -23,15 +21,16 @@ public class CensusAnalyser {
      */
     public int loadStateCensusData(String csvFilePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
-            Iterator<StateCensusCSV> stateCensusCSVIterator = this.getCSVFileIterator(reader,StateCensusCSV.class);
+            Iterator<StateCensusCSV> stateCensusCSVIterator = new OpenCSVBuilder().
+                                                                getCSVFileIterator(reader,StateCensusCSV.class);
             Iterable<StateCensusCSV> stateCensusCSVIterable = () -> stateCensusCSVIterator;
             return this.getCount(stateCensusCSVIterator);
         } catch (NoSuchFileException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.IMPROPER_FILE_DETAILS,
-                    "FILE DETAILS MISMATCH");
+                                                "FILE DETAILS MISMATCH");
         } catch (IOException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.INPUT_OUTPUT_EXCEPTION,
-                    "ERROR IN READING FILE");
+                                                "ERROR IN READING FILE");
         }
     }
 
@@ -43,15 +42,16 @@ public class CensusAnalyser {
      */
     public int loadStateCodeData(String csvFilePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
-            Iterator<StateCodeCSV> stateCodeCSVIterator = this.getCSVFileIterator(reader,StateCodeCSV.class);
+            Iterator<StateCodeCSV> stateCodeCSVIterator = new OpenCSVBuilder().
+                                                                getCSVFileIterator(reader,StateCodeCSV.class);
             Iterable<StateCodeCSV> stateCodeCSVIterable = () -> stateCodeCSVIterator;
             return this.getCount(stateCodeCSVIterator);
         } catch (NoSuchFileException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.IMPROPER_FILE_DETAILS,
-                    "FILE DETAILS MISMATCH");
+                                                "FILE DETAILS MISMATCH");
         } catch (IOException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.INPUT_OUTPUT_EXCEPTION,
-                    "ERROR IN READING FILE");
+                                                "ERROR IN READING FILE");
         }
     }
 
@@ -65,26 +65,5 @@ public class CensusAnalyser {
         Iterable<E> csvIterable = () -> iterator;
         int numOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
         return numOfEntries;
-    }
-
-    /**
-     * TASK: to get iterator of POJO class type passed in parameters corresponding to the Reader of the given csv file.
-     * @param reader
-     * @param csvClass
-     * @param <E>
-     * @return
-     * @throws CensusAnalyserException
-     */
-    private <E> Iterator getCSVFileIterator(Reader reader,Class csvClass) throws CensusAnalyserException {
-        try {
-            CsvToBeanBuilder<E> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
-            csvToBeanBuilder.withType(csvClass);
-            csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true).withSeparator(',');
-            CsvToBean<E> csvToBean = csvToBeanBuilder.build();
-            return csvToBean.iterator();
-        } catch (RuntimeException e) {
-            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.DELIMITER_MISMATCH,
-                    "DELIMITER MISMATCH/HEADER MISMATCH");
-        }
     }
 }
