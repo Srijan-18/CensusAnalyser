@@ -13,6 +13,9 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class CensusAnalyser {
@@ -27,8 +30,8 @@ public class CensusAnalyser {
             ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<StateCensusCSV> stateCensusCSVIterator = csvBuilder.
                                                                 getCSVFileIterator(reader,StateCensusCSV.class);
-            Iterable<StateCensusCSV> stateCensusCSVIterable = () -> stateCensusCSVIterator;
-            return this.getCount(stateCensusCSVIterator);
+            List<StateCensusCSV> stateCensusCSVList=this.getList(stateCensusCSVIterator);
+            return stateCensusCSVList.size();
         } catch (NoSuchFileException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.IMPROPER_FILE_DETAILS,
                                                 "FILE DETAILS MISMATCH");
@@ -51,8 +54,8 @@ public class CensusAnalyser {
             ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<StateCodeCSV> stateCodeCSVIterator = csvBuilder.
                                                                 getCSVFileIterator(reader,StateCodeCSV.class);
-            Iterable<StateCodeCSV> stateCodeCSVIterable = () -> stateCodeCSVIterator;
-            return this.getCount(stateCodeCSVIterator);
+            List<StateCodeCSV> stateCodeCSVList=this.getList(stateCodeCSVIterator);
+            return stateCodeCSVList.size();
         } catch (NoSuchFileException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.IMPROPER_FILE_DETAILS,
                                                 "FILE DETAILS MISMATCH");
@@ -74,5 +77,9 @@ public class CensusAnalyser {
         Iterable<E> csvIterable = () -> iterator;
         int numOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
         return numOfEntries;
+    }
+    private <E> List getList(Iterator<E> iterator) {
+        Iterable<E> iterable=() -> iterator;
+        return StreamSupport.stream(iterable.spliterator(),false).collect(Collectors.toList());
     }
 }
