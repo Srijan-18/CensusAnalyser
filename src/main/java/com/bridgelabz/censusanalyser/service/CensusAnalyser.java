@@ -32,6 +32,8 @@ public class CensusAnalyser {
         } catch (IOException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.INPUT_OUTPUT_EXCEPTION,
                                                 "ERROR IN READING FILE");
+        }catch (CSVBuilderException e) {
+            throw  new CensusAnalyserException(e.type.name(),e.getMessage());
         }
     }
 
@@ -54,6 +56,8 @@ public class CensusAnalyser {
         } catch (IOException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.INPUT_OUTPUT_EXCEPTION,
                                                 "ERROR IN READING FILE");
+        } catch (CSVBuilderException e) {
+            throw  new CensusAnalyserException(e.type.name(),e.getMessage());
         }
     }
 

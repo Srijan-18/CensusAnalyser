@@ -15,7 +15,7 @@ public class OpenCSVBuilder <E> implements ICSVBuilder {
      * @return iterato
      * @throws CensusAnalyserException
      */
-    public Iterator<E> getCSVFileIterator(Reader reader, Class csvClass) throws CensusAnalyserException {
+    public Iterator<E> getCSVFileIterator(Reader reader, Class csvClass) throws CSVBuilderException {
         try {
             CsvToBeanBuilder<E> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
             csvToBeanBuilder.withType(csvClass);
@@ -23,7 +23,7 @@ public class OpenCSVBuilder <E> implements ICSVBuilder {
             CsvToBean<E> csvToBean = csvToBeanBuilder.build();
             return csvToBean.iterator();
         } catch (RuntimeException e) {
-            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.DELIMITER_MISMATCH,
+            throw new CSVBuilderException(CSVBuilderException.ExceptionType.DELIMITER_MISMATCH,
                                             "DELIMITER MISMATCH/HEADER MISMATCH");
         }
     }
