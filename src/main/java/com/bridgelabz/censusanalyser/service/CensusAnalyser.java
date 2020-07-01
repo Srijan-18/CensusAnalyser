@@ -78,6 +78,13 @@ public class CensusAnalyser {
         int numOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
         return numOfEntries;
     }
+
+    /**
+     * TASK: to convert iterator to a list
+     * @param iterator
+     * @param <E>
+     * @return list
+     */
     private <E> List getList(Iterator<E> iterator) {
         Iterable<E> iterable=() -> iterator;
         return StreamSupport.stream(iterable.spliterator(),false).collect(Collectors.toList());
