@@ -7,16 +7,15 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.Reader;
 import java.util.Iterator;
 
-public class OpenCSVBuilder {
+public class OpenCSVBuilder <E> implements ICSVBuilder {
     /**
      * TASK: to get iterator of POJO class type passed in parameters corresponding to the Reader of the given csv file.
      * @param reader
      * @param csvClass
-     * @param <E>
-     * @return
+     * @return iterato
      * @throws CensusAnalyserException
      */
-    public <E> Iterator getCSVFileIterator(Reader reader,Class csvClass) throws CensusAnalyserException {
+    public Iterator<E> getCSVFileIterator(Reader reader, Class csvClass) throws CensusAnalyserException {
         try {
             CsvToBeanBuilder<E> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
             csvToBeanBuilder.withType(csvClass);
