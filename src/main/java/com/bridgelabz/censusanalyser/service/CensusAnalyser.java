@@ -142,6 +142,21 @@ public class CensusAnalyser {
     }
 
     /**
+     * TASK: To sort the list according to state area and return the result String in json format
+     * @return String in json format
+     * @throws CensusAnalyserException
+     */
+    public String getStateAreaSortedCensusData() throws CensusAnalyserException {
+        if(stateCensusCSVList.size() == 0 || stateCensusCSVList == null)
+            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_ELEMENTS,
+                    "NO ELEMENTS IN LIST TO SORT");
+        Comparator<StateCensusCSV> censusCSVComparator=Comparator.comparing(census->census.areaInSqKm);
+        this.sortDescending(censusCSVComparator,stateCensusCSVList);
+        this.writeIntoJson("./src/test/resources/StateCensusJSON.json", stateCensusCSVList);
+        return new Gson().toJson(stateCensusCSVList);
+    }
+
+    /**
      * TASK: Generic Method to sort entries in ascending order
      * @param censusCSVComparator
      * @param listToSort
@@ -192,21 +207,4 @@ public class CensusAnalyser {
             e.printStackTrace();
         }
     }
-
-    /**
-     * TASK: to read from a json file
-     * @param fileName
-     * @return String in json format
-     */
-    private String readFromJson(String fileName) throws CensusAnalyserException {
-        try (Reader reader = new FileReader(fileName)) {
-            Gson gson = new Gson();
-            StateCensusCSV stateCensusjson = gson.fromJson(reader,StateCensusCSV.class);
-            return stateCensusjson.toString();
-        } catch (IOException e) {
-            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.INPUT_OUTPUT_EXCEPTION,
-                                                "ERROR IN READING JSON FILE");
-        }
-    }
-
 }
