@@ -22,6 +22,7 @@ import java.util.stream.StreamSupport;
 public class CensusAnalyser {
 
     List<StateCensusCSV> stateCensusCSVList = null;
+    List<StateCodeCSV> stateCodeCSVList=null;
 
     /**
      * TASK: to generate count of entries in StateCensusCSV
@@ -60,7 +61,7 @@ public class CensusAnalyser {
             ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<StateCodeCSV> stateCodeCSVIterator = csvBuilder.
                     getCSVFileIterator(reader, StateCodeCSV.class);
-            List<StateCodeCSV> stateCodeCSVList = this.getList(stateCodeCSVIterator);
+            stateCodeCSVList = this.getList(stateCodeCSVIterator);
             return stateCodeCSVList.size();
         } catch (NoSuchFileException e) {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.IMPROPER_FILE_DETAILS,
@@ -103,19 +104,29 @@ public class CensusAnalyser {
             throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_ELEMENTS,
                                             "NO ELEMENTS IN LIST TO SORT");
         Comparator<StateCensusCSV> censusCSVComparator=Comparator.comparing(census->census.state);
-        this.sort(censusCSVComparator);
+        this.sort(censusCSVComparator,stateCensusCSVList);
         String sortedStateCensusJson=new Gson().toJson(stateCensusCSVList);
         return sortedStateCensusJson;
     }
 
-    private void sort(Comparator<StateCensusCSV> censusCSVComparator) {
-        for (int i = 0; i < stateCensusCSVList.size() - 1; i++) {
-            for (int j = 0; j < stateCensusCSVList.size() - i - 1; j++) {
-                StateCensusCSV census1 = stateCensusCSVList.get(j);
-                StateCensusCSV census2 = stateCensusCSVList.get(j + 1);
+    public String getStateCodeWiseSortedStateCodeData() throws CensusAnalyserException {
+        if(stateCodeCSVList.size() == 0 || stateCodeCSVList == null)
+            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_ELEMENTS,
+                    "NO ELEMENTS IN LIST TO SORT");
+        Comparator<StateCodeCSV> censusCSVComparator=Comparator.comparing(census->census.StateCode);
+        this.sort(censusCSVComparator,stateCodeCSVList);
+        String sortedStateCensusJson=new Gson().toJson(stateCodeCSVList);
+        return sortedStateCensusJson;
+    }
+
+    private <T> void sort(Comparator<T> censusCSVComparator,List listToSort) {
+        for (int i = 0; i < listToSort.size() - 1; i++) {
+            for (int j = 0; j < listToSort.size() - i - 1; j++) {
+                T census1 = (T) listToSort.get(j);
+                T census2 = (T) listToSort.get(j + 1);
                 if (censusCSVComparator.compare(census1, census2) > 0) {
-                    stateCensusCSVList.set(j, census2);
-                    stateCensusCSVList.set(j + 1, census1);
+                    listToSort.set(j, census2);
+                    listToSort.set(j + 1, census1);
                 }
             }
         }
