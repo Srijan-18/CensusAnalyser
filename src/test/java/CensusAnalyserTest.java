@@ -169,4 +169,29 @@ public class CensusAnalyserTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void givenStateCensusFile_WhenPopulationSortedInDescendingOrder_ShouldReturnTotalNumberOfStates() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadStateCensusData(STATE_CENSUS_CSV_FILE_PATH);
+            String sortedCensusData = censusAnalyser.getPopulationSortedCensusData();
+            StateCensusCSV[] stateCensusCSV = new Gson().fromJson(sortedCensusData, StateCensusCSV[].class);
+            Assert.assertEquals(29, stateCensusCSV.length);
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void givenStateCensusFile_WhenPopulationSortedInDescendingOrder_ShouldReturnUttarPradeshAsFirstElement() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadStateCensusData(STATE_CENSUS_CSV_FILE_PATH);
+            String sortedCensusData = censusAnalyser.getPopulationSortedCensusData();
+            StateCensusCSV[] stateCensusCSV = new Gson().fromJson(sortedCensusData, StateCensusCSV[].class);
+            Assert.assertEquals("Uttar Pradesh", stateCensusCSV[0].state);
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
 }
