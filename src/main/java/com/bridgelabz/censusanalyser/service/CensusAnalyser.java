@@ -131,4 +131,26 @@ public class CensusAnalyser {
             }
         }
     }
+    private <T> void sortDescending(Comparator<T> censusCSVComparator,List listToSort) {
+        for (int i = 0; i < listToSort.size() - 1; i++) {
+            for (int j = 0; j < listToSort.size() - i - 1; j++) {
+                T census1 = (T) listToSort.get(j);
+                T census2 = (T) listToSort.get(j + 1);
+                if (censusCSVComparator.compare(census1, census2) < 0) {
+                    listToSort.set(j, census2);
+                    listToSort.set(j + 1, census1);
+                }
+            }
+        }
+    }
+
+    public String getPopulationSortedCensusData() throws CensusAnalyserException {
+        if(stateCensusCSVList.size() == 0 || stateCensusCSVList == null)
+            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_ELEMENTS,
+                    "NO ELEMENTS IN LIST TO SORT");
+        Comparator<StateCensusCSV> censusCSVComparator=Comparator.comparing(census->census.population);
+        this.sortDescending(censusCSVComparator,stateCensusCSVList);
+        String sortedStateCensusJson=new Gson().toJson(stateCensusCSVList);
+        return sortedStateCensusJson;
+    }
 }
