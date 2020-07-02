@@ -7,7 +7,7 @@ public class CensusAnalyserException extends Exception {
     }
 
     public enum ExceptionType{
-       IMPROPER_FILE_DETAILS,INPUT_OUTPUT_EXCEPTION,DELIMITER_MISMATCH;
+       IMPROPER_FILE_DETAILS,INPUT_OUTPUT_EXCEPTION,DELIMITER_MISMATCH, NO_ELEMENTS;
    }
     ExceptionType type;
 
