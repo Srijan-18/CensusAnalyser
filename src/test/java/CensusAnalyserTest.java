@@ -1,5 +1,7 @@
 import com.bridgelabz.censusanalyser.exception.CensusAnalyserException;
+import com.bridgelabz.censusanalyser.model.StateCensusCSV;
 import com.bridgelabz.censusanalyser.service.CensusAnalyser;
+import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -112,6 +114,32 @@ public class CensusAnalyserTest {
                     ("./src/test/resources/IndianStateCodeWithWrongHeader.csv");
         } catch (CensusAnalyserException e) {
             Assert.assertEquals("DELIMITER MISMATCH/HEADER MISMATCH", e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenStateCensusFile_WhenSortedInAlphabaticalOrder_ShouldReturnAndraPradeshAsFirstElement() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadStateCensusData(STATE_CENSUS_CSV_FILE_PATH);
+            String sortedCensusData = censusAnalyser.getStateWiseSortedCensusData();
+            StateCensusCSV[] stateCensusCSV = new Gson().fromJson(sortedCensusData, StateCensusCSV[].class);
+            Assert.assertEquals("Andhra Pradesh", stateCensusCSV[0].state);
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenStateCensusFile_WhenSortedInAlphabaticalOrder_ShouldReturnWestBengalAsFirstElement() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadStateCensusData(STATE_CENSUS_CSV_FILE_PATH);
+            String sortedCensusData = censusAnalyser.getStateWiseSortedCensusData();
+            StateCensusCSV[] stateCensusCSV = new Gson().fromJson(sortedCensusData, StateCensusCSV[].class);
+            Assert.assertEquals("West Bengal", stateCensusCSV[stateCensusCSV.length-1].state);
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
         }
     }
 }
