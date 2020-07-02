@@ -131,7 +131,7 @@ public class CensusAnalyserTest {
     }
 
     @Test
-    public void givenStateCensusFile_WhenSortedInAlphabaticalOrder_ShouldReturnWestBengalAsFirstElement() {
+    public void givenStateCensusFile_WhenSortedInAlphabaticalOrder_ShouldReturnWestBengalAsLastElement() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadStateCensusData(STATE_CENSUS_CSV_FILE_PATH);
