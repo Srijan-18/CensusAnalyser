@@ -4,12 +4,15 @@ import com.bridgelabz.censusanalyser.exception.CensusAnalyserException;
 import com.bridgelabz.censusanalyser.model.StateCensusCSV;
 import com.bridgelabz.censusanalyser.model.StateCodeCSV;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import csvbuilder.exception.CSVBuilderException;
 import csvbuilder.service.CSVBuilderFactory;
 import csvbuilder.service.ICSVBuilder;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
@@ -128,6 +131,7 @@ public class CensusAnalyser {
         Comparator<StateCensusCSV> censusCSVComparator=Comparator.comparing(census->census.population);
         this.sortDescending(censusCSVComparator,stateCensusCSVList);
         String sortedStateCensusJson=new Gson().toJson(stateCensusCSVList);
+        this.writeIntoJson("./src/test/resources/StateCensusJSON.json", stateCensusCSVList);
         return sortedStateCensusJson;
     }
 
@@ -166,6 +170,20 @@ public class CensusAnalyser {
                     listToSort.set(j + 1, census1);
                 }
             }
+        }
+    }
+
+    /**
+     * TASK: to write a list into a json file
+     * @param fileName
+     * @param listToWrite
+     */
+    private void writeIntoJson(String fileName,List listToWrite) {
+        try (Writer writer = new FileWriter(fileName)) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(listToWrite, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
