@@ -210,4 +210,18 @@ public class CensusAnalyserTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void givenStateCensusFile_WhenStateAreaSortedInDescendingOrder_ShouldReturnRajasthanAsFirstElement() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadStateCensusData(STATE_CENSUS_CSV_FILE_PATH);
+            StateCensusCSV[] stateCensusCSV = new Gson().fromJson(
+                    censusAnalyser.getStateAreaSortedCensusData(),
+                    StateCensusCSV[].class);
+            Assert.assertEquals("Rajasthan", stateCensusCSV[0].state);
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
 }
