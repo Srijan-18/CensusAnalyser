@@ -3,8 +3,8 @@ package com.bridgelabz.censusanalyser.service;
 import com.bridgelabz.censusanalyser.exception.CensusAnalyserException;
 import com.bridgelabz.censusanalyser.model.StateCensusCSV;
 import com.bridgelabz.censusanalyser.model.StateCodeCSV;
+import com.bridgelabz.censusanalyser.util.CensusUtilities;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import csvbuilder.exception.CSVBuilderException;
 import csvbuilder.service.CSVBuilderFactory;
 import csvbuilder.service.ICSVBuilder;
@@ -92,11 +92,9 @@ public class CensusAnalyser {
      * @throws CensusAnalyserException
      */
     public String getStateWiseSortedCensusData() throws CensusAnalyserException {
-        if(stateCensusCSVList.size() == 0 || stateCensusCSVList == null)
-            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_ELEMENTS,
-                                            "NO ELEMENTS IN LIST TO SORT");
+        this.checkEmpty(stateCensusCSVList);
         Comparator<StateCensusCSV> censusCSVComparator=Comparator.comparing(census->census.state);
-        this.sortAscending(censusCSVComparator,stateCensusCSVList);
+        new CensusUtilities<StateCensusCSV>().sortAscending(censusCSVComparator,stateCensusCSVList);
         String sortedStateCensusJson=new Gson().toJson(stateCensusCSVList);
         return sortedStateCensusJson;
     }
@@ -107,13 +105,10 @@ public class CensusAnalyser {
      * @throws CensusAnalyserException
      */
     public String getStateCodeWiseSortedStateCodeData() throws CensusAnalyserException {
-        if(stateCodeCSVList.size() == 0 || stateCodeCSVList == null)
-            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_ELEMENTS,
-                    "NO ELEMENTS IN LIST TO SORT");
+        this.checkEmpty(stateCodeCSVList);
         Comparator<StateCodeCSV> censusCSVComparator=Comparator.comparing(census->census.StateCode);
-        this.sortAscending(censusCSVComparator,stateCodeCSVList);
-        String sortedStateCensusJson=new Gson().toJson(stateCodeCSVList);
-        return sortedStateCensusJson;
+        new CensusUtilities<StateCodeCSV>().sortAscending(censusCSVComparator,stateCodeCSVList);
+        return new Gson().toJson(stateCodeCSVList);
     }
 
     /**
@@ -122,91 +117,51 @@ public class CensusAnalyser {
      * @throws CensusAnalyserException
      */
     public String getPopulationSortedCensusData() throws CensusAnalyserException {
-        if(stateCensusCSVList.size() == 0 || stateCensusCSVList == null)
-            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_ELEMENTS,
-                    "NO ELEMENTS IN LIST TO SORT");
+        this.checkEmpty(stateCensusCSVList);
         Comparator<StateCensusCSV> censusCSVComparator=Comparator.comparing(census->census.population);
-        this.sortDescending(censusCSVComparator,stateCensusCSVList);
-        String sortedStateCensusJson=new Gson().toJson(stateCensusCSVList);
-        this.writeIntoJson("./src/test/resources/StateCensusJSON.json", stateCensusCSVList);
-        return sortedStateCensusJson;
-    }
-    public String getPopulationDensitySortedCensusData() throws CensusAnalyserException {
-        if(stateCensusCSVList.size() == 0 || stateCensusCSVList == null)
-            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_ELEMENTS,
-                    "NO ELEMENTS IN LIST TO SORT");
-        Comparator<StateCensusCSV> censusCSVComparator=Comparator.comparing(census->census.densityPerSqKm);
-        this.sortDescending(censusCSVComparator,stateCensusCSVList);
-        this.writeIntoJson("./src/test/resources/StateCensusJSON.json", stateCensusCSVList);
+        CensusUtilities censusUtilities=new CensusUtilities<StateCensusCSV>();
+        censusUtilities.sortDescending(censusCSVComparator,stateCensusCSVList);
+        censusUtilities.writeIntoJson("./src/test/resources/StateCensusJSON.json", stateCensusCSVList);
         return new Gson().toJson(stateCensusCSVList);
     }
 
     /**
-     * TASK: Generic Method to sort entries in ascending order
-     * @param censusCSVComparator
-     * @param listToSort
-     * @param <T>
+     * TASK: To sort according to population density in descending order and return state census data in json format
+     * @return
+     * @throws CensusAnalyserException
      */
-    private <T> void sortAscending(Comparator<T> censusCSVComparator, List listToSort) {
-        for (int i = 0; i < listToSort.size() - 1; i++) {
-            for (int j = 0; j < listToSort.size() - i - 1; j++) {
-                T census1 = (T) listToSort.get(j);
-                T census2 = (T) listToSort.get(j + 1);
-                if (censusCSVComparator.compare(census1, census2) > 0) {
-                    listToSort.set(j, census2);
-                    listToSort.set(j + 1, census1);
-                }
-            }
-        }
+    public String getPopulationDensitySortedCensusData() throws CensusAnalyserException {
+        this.checkEmpty(stateCensusCSVList);
+        Comparator<StateCensusCSV> censusCSVComparator=Comparator.comparing(census->census.densityPerSqKm);
+        CensusUtilities censusUtilities=new CensusUtilities<StateCensusCSV>();
+        censusUtilities.sortDescending(censusCSVComparator,stateCensusCSVList);
+        censusUtilities.writeIntoJson("./src/test/resources/StateCensusJSON.json", stateCensusCSVList);
+        return new Gson().toJson(stateCensusCSVList);
     }
 
     /**
-     * TASK: Generic Method to sort entries in descending order
-     * @param censusCSVComparator
-     * @param listToSort
-     * @param <T>
-     */
-    private <T> void sortDescending(Comparator<T> censusCSVComparator,List listToSort) {
-        for (int i = 0; i < listToSort.size() - 1; i++) {
-            for (int j = 0; j < listToSort.size() - i - 1; j++) {
-                T census1 = (T) listToSort.get(j);
-                T census2 = (T) listToSort.get(j + 1);
-                if (censusCSVComparator.compare(census1, census2) < 0) {
-                    listToSort.set(j, census2);
-                    listToSort.set(j + 1, census1);
-                }
-            }
-        }
-    }
-
-    /**
-     * TASK: to write a list into a json file
-     * @param fileName
-     * @param listToWrite
-     */
-    private void writeIntoJson(String fileName,List listToWrite) {
-        try (Writer writer = new FileWriter(fileName)) {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            gson.toJson(listToWrite, writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * TASK: to read from a json file
-     * @param fileName
+     * TASK: To sort the list according to state area and return the result String in json format
      * @return String in json format
+     * @throws CensusAnalyserException
      */
-    private String readFromJson(String fileName) throws CensusAnalyserException {
-        try (Reader reader = new FileReader(fileName)) {
-            Gson gson = new Gson();
-            StateCensusCSV stateCensusjson = gson.fromJson(reader,StateCensusCSV.class);
-            return stateCensusjson.toString();
-        } catch (IOException e) {
-            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.INPUT_OUTPUT_EXCEPTION,
-                                                "ERROR IN READING JSON FILE");
-        }
+    public String getStateAreaSortedCensusData() throws CensusAnalyserException {
+        this.checkEmpty(stateCensusCSVList);
+        Comparator<StateCensusCSV> censusCSVComparator=Comparator.comparing(census->census.areaInSqKm);
+        CensusUtilities censusUtilities=new CensusUtilities<StateCensusCSV>();
+        censusUtilities.sortDescending(censusCSVComparator,stateCensusCSVList);
+        censusUtilities.writeIntoJson("./src/test/resources/StateCensusJSON.json", stateCensusCSVList);
+        return new Gson().toJson(stateCensusCSVList);
     }
 
+    /**
+     * TASK: To check if list is empty , if empty throw custom exception.
+     * @param listToCheck
+     * @throws CensusAnalyserException
+     */
+    private void checkEmpty(List listToCheck) throws CensusAnalyserException {
+        if(listToCheck.size() == 0 || listToCheck == null)
+            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_ELEMENTS,
+                    "NO ELEMENTS IN LIST TO SORT");
+
+    }
 }
