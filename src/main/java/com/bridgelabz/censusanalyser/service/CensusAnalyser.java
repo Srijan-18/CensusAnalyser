@@ -203,6 +203,21 @@ public class CensusAnalyser {
     }
 
     /**
+     * TASK: To sort according to population density in descending order and return state census data in json format
+     * @return
+     * @throws CensusAnalyserException
+     */
+    public String getPopulationDensitySortedUSCensusData() throws CensusAnalyserException {
+        this.checkEmpty(this.censusMap);
+        Comparator<CensusDAO> censusCSVComparator=Comparator.comparing(census->census.populationDensity);
+        CensusUtilities censusUtilities=new CensusUtilities<CensusDAO>();
+        censusUtilities.sortDescending(censusCSVComparator, this.getList(censusMap));
+        censusUtilities.writeIntoJson("./src/test/resources/USCensusJSON.json",
+                censusUtilities.sortDescending(censusCSVComparator, this.getList(censusMap)));
+        return new Gson().toJson(censusUtilities.sortDescending(censusCSVComparator, this.getList(censusMap)));
+    }
+
+    /**
      * TASK: To check if list is empty , if empty throw custom exception.
      * @param mapToCheck
      * @throws CensusAnalyserException
