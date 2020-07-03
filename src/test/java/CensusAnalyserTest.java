@@ -264,4 +264,19 @@ public class CensusAnalyserTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void givenUSStateCensusFile_WhenStateAreaSortedInDescendingOrder_ShouldReturnAlaskaAsFirstElement() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadUSCensusData(US_CENSUS_CSV_FILE_PATH);
+            CensusDAO[] censusDAOS = new Gson().fromJson(
+                    censusAnalyser.getStateAreaSortedUSCensusData(),
+                    CensusDAO[].class);
+            Assert.assertEquals("Alaska", censusDAOS[0].stateName);
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

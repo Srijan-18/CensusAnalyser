@@ -218,6 +218,21 @@ public class CensusAnalyser {
     }
 
     /**
+     * TASK: To sort the list according to US state area and return the result String in json format
+     * @return String in json format
+     * @throws CensusAnalyserException
+     */
+    public String getStateAreaSortedUSCensusData() throws CensusAnalyserException {
+        this.checkEmpty(this.censusMap);
+        Comparator<CensusDAO> censusCSVComparator=Comparator.comparing(census->census.totalArea);
+        CensusUtilities censusUtilities=new CensusUtilities<CensusDAO>();
+        censusUtilities.sortDescending(censusCSVComparator, this.getList(censusMap));
+        censusUtilities.writeIntoJson("./src/test/resources/StateCensusJSON.json",
+                censusUtilities.sortDescending(censusCSVComparator, this.getList(censusMap)));
+        return new Gson().toJson(censusUtilities.sortDescending(censusCSVComparator, this.getList(censusMap)));
+    }
+
+    /**
      * TASK: To check if list is empty , if empty throw custom exception.
      * @param mapToCheck
      * @throws CensusAnalyserException
