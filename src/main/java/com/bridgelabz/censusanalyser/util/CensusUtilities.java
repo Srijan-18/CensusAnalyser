@@ -14,7 +14,7 @@ public class CensusUtilities<T> {
      * @param listToSort
      * @param <T>
      */
-    public void sortAscending(Comparator<T> censusCSVComparator, List listToSort) {
+    public List sortAscending(Comparator<T> censusCSVComparator, List listToSort) {
         for (int i = 0; i < listToSort.size() - 1; i++) {
             for (int j = 0; j < listToSort.size() - i - 1; j++) {
                 T census1 = (T) listToSort.get(j);
@@ -25,6 +25,7 @@ public class CensusUtilities<T> {
                 }
             }
         }
+        return listToSort;
     }
 
     /**
@@ -33,7 +34,7 @@ public class CensusUtilities<T> {
      * @param listToSort
      * @param <T>
      */
-    public void sortDescending(Comparator<T> censusCSVComparator,List listToSort) {
+    public List sortDescending(Comparator<T> censusCSVComparator,List listToSort) {
         for (int i = 0; i < listToSort.size() - 1; i++) {
             for (int j = 0; j < listToSort.size() - i - 1; j++) {
                 T census1 = (T) listToSort.get(j);
@@ -44,6 +45,7 @@ public class CensusUtilities<T> {
                 }
             }
         }
+        return listToSort;
     }
 
 
