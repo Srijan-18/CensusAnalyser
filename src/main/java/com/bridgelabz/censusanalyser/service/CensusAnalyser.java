@@ -81,26 +81,6 @@ public class CensusAnalyser {
         }
     }
 
-    public int loadUSCensusData(String csvFilePath) throws CensusAnalyserException {
-        try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
-            ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
-            Iterator<USCensusDataCSV> stateCodeIterator = csvBuilder.
-                    getCSVFileIterator(reader, USCensusDataCSV.class);
-            Iterable<USCensusDataCSV> stateCodeIterable = () -> stateCodeIterator;
-            StreamSupport.stream(stateCodeIterable.spliterator(),false).
-                    forEach(censusData -> censusMap.put(censusData.state ,new CensusDAO(censusData)));
-            return censusMap.size();
-        } catch (NoSuchFileException e) {
-            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.IMPROPER_FILE_DETAILS,
-                    "FILE DETAILS MISMATCH");
-        } catch (IOException e) {
-            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.INPUT_OUTPUT_EXCEPTION,
-                    "ERROR IN READING FILE");
-        } catch (CSVBuilderException e) {
-            throw new CensusAnalyserException(e.type.name(), e.getMessage());
-        }
-    }
-
     /**
      * TASK: to convert map to a list
      *
@@ -180,6 +160,46 @@ public class CensusAnalyser {
         censusUtilities.writeIntoJson("./src/test/resources/StateCensusJSON.json",
                                 censusUtilities.sortDescending(censusCSVComparator, this.getList(censusMap)));
         return new Gson().toJson(censusUtilities.sortDescending(censusCSVComparator, this.getList(censusMap)));
+    }
+
+    /**
+     * TASK: To Load USCensus Data File from given Path
+     * @param csvFilePath
+     * @return
+     * @throws CensusAnalyserException
+     */
+    public int loadUSCensusData(String csvFilePath) throws CensusAnalyserException {
+        try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
+            ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
+            Iterator<USCensusDataCSV> stateCodeIterator = csvBuilder.
+                    getCSVFileIterator(reader, USCensusDataCSV.class);
+            Iterable<USCensusDataCSV> stateCodeIterable = () -> stateCodeIterator;
+            StreamSupport.stream(stateCodeIterable.spliterator(),false).
+                    forEach(censusData -> censusMap.put(censusData.state ,new CensusDAO(censusData)));
+            return censusMap.size();
+        } catch (NoSuchFileException e) {
+            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.IMPROPER_FILE_DETAILS,
+                    "FILE DETAILS MISMATCH");
+        } catch (IOException e) {
+            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.INPUT_OUTPUT_EXCEPTION,
+                    "ERROR IN READING FILE");
+        } catch (CSVBuilderException e) {
+            throw new CensusAnalyserException(e.type.name(), e.getMessage());
+        }
+    }
+
+    /**
+     * TASK: To sort US Census Data in decreasing order of population and write in json format.
+     * @return
+     * @throws CensusAnalyserException
+     */
+    public String getPopulationSortedUSCensusData() throws CensusAnalyserException {
+        this.checkEmpty(this.censusMap);
+        Comparator<CensusDAO> censusCSVComparator=Comparator.comparing(census->census.population);
+        CensusUtilities censusUtilities=new CensusUtilities<CensusDAO>();
+        censusUtilities.writeIntoJson("./src/test/resources/USCensusJSON.json",
+                censusUtilities.sortDescending(censusCSVComparator,this.getList(this.censusMap)));
+        return new Gson().toJson(censusUtilities.sortDescending(censusCSVComparator,this.getList(this.censusMap)));
     }
 
     /**
