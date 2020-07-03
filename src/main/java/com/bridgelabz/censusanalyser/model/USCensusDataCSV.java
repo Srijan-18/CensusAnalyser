@@ -30,18 +30,4 @@ public class USCensusDataCSV {
     @CsvBindByName(column = "Housing Density", required = true)
     public Double housingDensity;
 
-    @Override
-    public String toString() {
-        return "USCensusCSV{" +
-                "stateId=" + stateId +
-                ", state='" + state + '\'' +
-                ", population=" + population +
-                ", housingUnits=" + housingUnits +
-                ", totalArea='" + totalArea + '\'' +
-                ", waterArea=" + waterArea +
-                ", landArea='" + landArea + '\'' +
-                ", populationDensity=" + populationDensity +
-                ", housingDensity=" + housingDensity +
-                '}';
-    }
 }

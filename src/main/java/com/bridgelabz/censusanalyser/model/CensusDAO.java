@@ -1,9 +1,8 @@
 package com.bridgelabz.censusanalyser.model;
 
 public class CensusDAO {
-    public int population;
-    public int densityPerSqKm;
-    public int areaInSqKm;
+    public Integer densityPerSqKm;
+    public Integer areaInSqKm;
     public String stateName;
     public Integer tin;
     public String stateCode;
@@ -16,7 +15,7 @@ public class CensusDAO {
     public Double landArea;
     public Double populationDensity;
     public Double housingDensity;
-
+    public Integer population;
 
     public CensusDAO(IndiaStateCodeCSV stateCodeCSV) {
        srNo = stateCodeCSV.srNo;
