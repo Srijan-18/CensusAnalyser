@@ -1,0 +1,224 @@
+[
+  {
+    "stateName": "Andhra Pradesh New",
+    "tin": 37,
+    "stateCode": "AD",
+    "srNo": 3
+  },
+  {
+    "stateName": "Andaman and Nicobar Islands",
+    "tin": 35,
+    "stateCode": "AN",
+    "srNo": 1
+  },
+  {
+    "stateName": "Andhra Pradesh",
+    "tin": 28,
+    "stateCode": "AP",
+    "srNo": 2
+  },
+  {
+    "stateName": "Arunachal Pradesh",
+    "tin": 12,
+    "stateCode": "AR",
+    "srNo": 4
+  },
+  {
+    "stateName": "Assam",
+    "tin": 18,
+    "stateCode": "AS",
+    "srNo": 5
+  },
+  {
+    "stateName": "Bihar",
+    "tin": 10,
+    "stateCode": "BH",
+    "srNo": 6
+  },
+  {
+    "stateName": "Chandigarh",
+    "tin": 4,
+    "stateCode": "CH",
+    "srNo": 7
+  },
+  {
+    "stateName": "Chattisgarh",
+    "tin": 22,
+    "stateCode": "CT",
+    "srNo": 8
+  },
+  {
+    "stateName": "Daman and Diu",
+    "tin": 25,
+    "stateCode": "DD",
+    "srNo": 10
+  },
+  {
+    "stateName": "Delhi",
+    "tin": 7,
+    "stateCode": "DL",
+    "srNo": 11
+  },
+  {
+    "stateName": "Dadra and Nagar Haveli",
+    "tin": 26,
+    "stateCode": "DN",
+    "srNo": 9
+  },
+  {
+    "stateName": "Goa",
+    "tin": 30,
+    "stateCode": "GA",
+    "srNo": 12
+  },
+  {
+    "stateName": "Gujarat",
+    "tin": 24,
+    "stateCode": "GJ",
+    "srNo": 13
+  },
+  {
+    "stateName": "Himachal Pradesh",
+    "tin": 2,
+    "stateCode": "HP",
+    "srNo": 15
+  },
+  {
+    "stateName": "Haryana",
+    "tin": 6,
+    "stateCode": "HR",
+    "srNo": 14
+  },
+  {
+    "stateName": "Jharkhand",
+    "tin": 20,
+    "stateCode": "JH",
+    "srNo": 17
+  },
+  {
+    "stateName": "Jammu and Kashmir",
+    "tin": 1,
+    "stateCode": "JK",
+    "srNo": 16
+  },
+  {
+    "stateName": "Karnataka",
+    "tin": 29,
+    "stateCode": "KA",
+    "srNo": 18
+  },
+  {
+    "stateName": "Kerala",
+    "tin": 32,
+    "stateCode": "KL",
+    "srNo": 19
+  },
+  {
+    "stateName": "Lakshadweep Islands",
+    "tin": 31,
+    "stateCode": "LD",
+    "srNo": 20
+  },
+  {
+    "stateName": "Meghalaya",
+    "tin": 17,
+    "stateCode": "ME",
+    "srNo": 24
+  },
+  {
+    "stateName": "Maharashtra",
+    "tin": 27,
+    "stateCode": "MH",
+    "srNo": 22
+  },
+  {
+    "stateName": "Mizoram",
+    "tin": 15,
+    "stateCode": "MI",
+    "srNo": 25
+  },
+  {
+    "stateName": "Manipur",
+    "tin": 14,
+    "stateCode": "MN",
+    "srNo": 23
+  },
+  {
+    "stateName": "Madhya Pradesh",
+    "tin": 23,
+    "stateCode": "MP",
+    "srNo": 21
+  },
+  {
+    "stateName": "Nagaland",
+    "tin": 13,
+    "stateCode": "NL",
+    "srNo": 26
+  },
+  {
+    "stateName": "Odisha",
+    "tin": 21,
+    "stateCode": "OR",
+    "srNo": 27
+  },
+  {
+    "stateName": "Punjab",
+    "tin": 3,
+    "stateCode": "PB",
+    "srNo": 29
+  },
+  {
+    "stateName": "Pondicherry",
+    "tin": 34,
+    "stateCode": "PY",
+    "srNo": 28
+  },
+  {
+    "stateName": "Rajasthan",
+    "tin": 8,
+    "stateCode": "RJ",
+    "srNo": 30
+  },
+  {
+    "stateName": "Sikkim",
+    "tin": 11,
+    "stateCode": "SK",
+    "srNo": 31
+  },
+  {
+    "stateName": "Tamil Nadu",
+    "tin": 33,
+    "stateCode": "TN",
+    "srNo": 32
+  },
+  {
+    "stateName": "Tripura",
+    "tin": 16,
+    "stateCode": "TR",
+    "srNo": 34
+  },
+  {
+    "stateName": "Telangana",
+    "tin": 36,
+    "stateCode": "TS",
+    "srNo": 33
+  },
+  {
+    "stateName": "Uttar Pradesh",
+    "tin": 9,
+    "stateCode": "UP",
+    "srNo": 35
+  },
+  {
+    "stateName": "Uttarakhand",
+    "tin": 5,
+    "stateCode": "UT",
+    "srNo": 36
+  },
+  {
+    "stateName": "West Bengal",
+    "tin": 19,
+    "stateCode": "WB",
+    "srNo": 37
+  }
+]
