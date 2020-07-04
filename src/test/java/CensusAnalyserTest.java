@@ -342,7 +342,8 @@ public class CensusAnalyserTest {
     }
 
     @Test
-    public void givenUSAndIndiaCensusFile_ShouldReturnDataOfMostAsMostDenslyPopulousState() throws NoSuchFieldException, CensusAnalyserException {
+    public void givenUSAndIndiaCensusFile_ShouldReturnDataOfMostAsMostDenslyPopulousState()
+            throws NoSuchFieldException, CensusAnalyserException {
         CensusAnalyser censusAnalyser = new CensusAnalyser();
         CensusDAO mostDenseStateData = censusAnalyser.
                                         getMostDenseState(US_CENSUS_CSV_FILE_PATH,STATE_CENSUS_CSV_FILE_PATH);
