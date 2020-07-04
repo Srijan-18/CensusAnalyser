@@ -121,8 +121,8 @@ public class CensusAnalyserTest {
     }
 
     @Test
-    public void givenStateCensusFile_WhenSortedInAlphabaticalOrder_ShouldReturnAndraPradeshAsFirstElement() {
-        try {
+    public void givenStateCensusFile_WhenSortedInAlphabaticalOrder_ShouldReturnAndraPradeshAsFirstElement()
+                                                    throws NoSuchFieldException, CensusAnalyserException {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadStateCensusData(STATE_CENSUS_CSV_FILE_PATH);
             CensusDAO[] censusDAOS = new Gson().fromJson(censusAnalyser.
@@ -130,14 +130,11 @@ public class CensusAnalyserTest {
                                     "stateName", false),
                             CensusDAO[].class);
             Assert.assertEquals("Andhra Pradesh", censusDAOS[0].stateName);
-        } catch (CensusAnalyserException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
-    public void givenStateCensusFile_WhenSortedInAlphabaticalOrder_ShouldReturnWestBengalAsLastElement() {
-        try {
+    public void givenStateCensusFile_WhenSortedInAlphabaticalOrder_ShouldReturnWestBengalAsLastElement()
+                                                    throws NoSuchFieldException, CensusAnalyserException {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadStateCensusData(STATE_CENSUS_CSV_FILE_PATH);
             CensusDAO[] censusDAOS = new Gson().fromJson(censusAnalyser.
@@ -145,14 +142,11 @@ public class CensusAnalyserTest {
                                     "stateName", false),
                             CensusDAO[].class);
             Assert.assertEquals("West Bengal", censusDAOS[censusDAOS.length - 1].stateName);
-        } catch (CensusAnalyserException e) {
-            e.printStackTrace();
         }
-    }
 
     @Test
-    public void givenStateCodeFile_WhenSortedAccordingToStateCode_ShouldReturnADAsFirstElement() {
-        try {
+    public void givenStateCodeFile_WhenSortedAccordingToStateCode_ShouldReturnADAsFirstElement()
+                                                    throws CensusAnalyserException, NoSuchFieldException {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadStateCodeData(STATE_CODE_CSV_FILE_PATH);
             CensusDAO[] censusDAOS = new Gson().fromJson(censusAnalyser.
@@ -160,14 +154,11 @@ public class CensusAnalyserTest {
                                     "stateCode", false),
                             CensusDAO[].class);
             Assert.assertEquals("AD", censusDAOS[0].stateCode);
-        } catch (CensusAnalyserException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
-    public void givenStateCodeFile_WhenSortedAccordingToStateCode_ShouldReturnWBAsLastElement() {
-        try {
+    public void givenStateCodeFile_WhenSortedAccordingToStateCode_ShouldReturnWBAsLastElement()
+                                                    throws NoSuchFieldException, CensusAnalyserException {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadStateCodeData(STATE_CODE_CSV_FILE_PATH);
             CensusDAO[] censusDAOS = new Gson().fromJson(censusAnalyser.
@@ -175,14 +166,11 @@ public class CensusAnalyserTest {
                                     "stateCode", false),
                             CensusDAO[].class);
             Assert.assertEquals("WB", censusDAOS[censusDAOS.length - 1].stateCode);
-        } catch (CensusAnalyserException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
-    public void givenStateCensusFile_WhenPopulationSortedInDescendingOrder_ShouldReturnUttarPradeshAsFirstElement() {
-        try {
+    public void givenStateCensusFile_WhenPopulationSortedInDescendingOrder_ShouldReturnUttarPradeshAsFirstElement()
+                                                    throws CensusAnalyserException, NoSuchFieldException {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadStateCensusData(STATE_CENSUS_CSV_FILE_PATH);
             CensusDAO[] censusDAOS = new Gson().fromJson(censusAnalyser.
@@ -190,14 +178,11 @@ public class CensusAnalyserTest {
                                         "population", true),
                              CensusDAO[].class);
             Assert.assertEquals("Uttar Pradesh", censusDAOS[0].stateName);
-        } catch (CensusAnalyserException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
-    public void givenStateCensusFile_WhenPopulationDensitySortedInDescendingOrder_ShouldReturnBiharAsFirstElement() {
-        try {
+    public void givenStateCensusFile_WhenPopulationDensitySortedInDescendingOrder_ShouldReturnBiharAsFirstElement()
+                                                    throws NoSuchFieldException, CensusAnalyserException {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadStateCensusData(STATE_CENSUS_CSV_FILE_PATH);
             CensusDAO[] censusDAOS = new Gson().fromJson(censusAnalyser.
@@ -206,14 +191,11 @@ public class CensusAnalyserTest {
                                     "densityPerSqKm", true),
                                     CensusDAO[].class);
             Assert.assertEquals("Bihar", censusDAOS[0].stateName);
-        } catch (CensusAnalyserException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
-    public void givenStateCensusFile_WhenStateAreaSortedInDescendingOrder_ShouldReturnRajasthanAsFirstElement() {
-        try {
+    public void givenStateCensusFile_WhenStateAreaSortedInDescendingOrder_ShouldReturnRajasthanAsFirstElement()
+                                                    throws NoSuchFieldException, CensusAnalyserException {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadStateCensusData(STATE_CENSUS_CSV_FILE_PATH);
             CensusDAO[] censusDAOS = new Gson().fromJson(censusAnalyser.
@@ -221,9 +203,6 @@ public class CensusAnalyserTest {
                                     "areaInSqKm", true),
                             CensusDAO[].class);
             Assert.assertEquals("Rajasthan", censusDAOS[0].stateName);
-        } catch (CensusAnalyserException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
@@ -238,8 +217,52 @@ public class CensusAnalyserTest {
     }
 
     @Test
-    public void givenUSCensusFile_WhenPopulationSortedInDescendingOrder_ShouldReturnCaliforniaAsFirstElement() {
+    public void givenUSCensusFileLocation_WhenImProper_ShouldTrowAnExceptionMessage() {
         try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            int numOfRecords = censusAnalyser.loadUSCensusData
+                    ("./src/main/resources/USCensusDataWithWrongHeader.csv");
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals("FILE DETAILS MISMATCH", e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenUSCensusFileDetails_WhenTypeIncorrect_ShouldThrowAnException() {
+        CensusAnalyser censusAnalyser = new CensusAnalyser();
+        try {
+            int numOfRecords = censusAnalyser.loadUSCensusData("./src/test/resources/USCensusData.pdf");
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals("FILE DETAILS MISMATCH", e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenUSFileDetails_WhenDelimiterIncorrect_ShouldThrowAnException() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            int numOfRecords = censusAnalyser.loadUSCensusData
+                    ("./src/test/resources/USCensusDataWithWrongDelimiter.csv");
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals("DELIMITER MISMATCH/HEADER MISMATCH", e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenUSCensusFile_WhenHeaderIncorrect_ShouldThrowAnException() {
+        try {
+            CensusAnalyser stateCensusAnalyser = new CensusAnalyser();
+            int numOfRecords = stateCensusAnalyser.loadStateCensusData
+                    ("./src/test/resources/USCensusDataWithWrongHeader.csv");
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals("DELIMITER MISMATCH/HEADER MISMATCH", e.getMessage());
+        }
+    }
+
+
+    @Test
+    public void givenUSCensusFile_WhenPopulationSortedInDescendingOrder_ShouldReturnCaliforniaAsFirstElement()
+                                                    throws NoSuchFieldException, CensusAnalyserException {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadUSCensusData(US_CENSUS_CSV_FILE_PATH);
             CensusDAO[] censusDAOS = new Gson().fromJson(censusAnalyser.
@@ -247,15 +270,12 @@ public class CensusAnalyserTest {
                                     "population", true),
                             CensusDAO[].class);
             Assert.assertEquals("California", censusDAOS[0].stateName);
-        } catch (CensusAnalyserException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
     public void
-    givenUSCensusFile_WhenPopulationDensitySortedInDescendingOrder_ShouldReturnDistrictOfColumbiaAsFirstElement() {
-        try {
+    givenUSCensusFile_WhenPopulationDensitySortedInDescendingOrder_ShouldReturnDistrictOfColumbiaAsFirstElement()
+                                                    throws NoSuchFieldException, CensusAnalyserException {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadUSCensusData(US_CENSUS_CSV_FILE_PATH);
             CensusDAO[] censusDAOS = new Gson().fromJson(censusAnalyser.
@@ -263,13 +283,11 @@ public class CensusAnalyserTest {
                                     "populationDensity", true),
                             CensusDAO[].class);
             Assert.assertEquals("District of Columbia", censusDAOS[0].stateName);
-        } catch (CensusAnalyserException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
-    public void givenUSStateCensusFile_WhenStateAreaSortedInDescendingOrder_ShouldReturnAlaskaAsFirstElement() {
+    public void givenUSStateCensusFile_WhenStateAreaSortedInDescendingOrder_ShouldReturnAlaskaAsFirstElement()
+                                                                                throws NoSuchFieldException {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadUSCensusData(US_CENSUS_CSV_FILE_PATH);
@@ -280,6 +298,45 @@ public class CensusAnalyserTest {
             Assert.assertEquals("Alaska", censusDAOS[0].stateName);
         } catch (CensusAnalyserException e) {
             e.printStackTrace();
+        }
+    }
+    @Test
+    public void givenUSStateCensusFile_WhenInvalidFiledName_ShouldThrowAnException() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadUSCensusData(US_CENSUS_CSV_FILE_PATH);
+            CensusDAO[] censusDAOS = new Gson().fromJson(censusAnalyser.
+                            sortDataToJSON("./src/test/resources/USCensusDataTotalAreaWise.json",
+                                    "total", true),
+                    CensusDAO[].class);
+        } catch (Exception e) {
+            Assert.assertEquals("INVALID FIELD",e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenUSStateCensusFile_WhenInvalidFiledNameAndInAscendingOrder_ShouldThrowAnException() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadUSCensusData(US_CENSUS_CSV_FILE_PATH);
+            CensusDAO[] censusDAOS = new Gson().fromJson(censusAnalyser.
+                            sortDataToJSON("./src/test/resources/USCensusDataTotalAreaWise.json",
+                                    "total", false),
+                    CensusDAO[].class);
+        } catch (Exception e) {
+            Assert.assertEquals("INVALID FIELD",e.getMessage());
+        }
+    }
+    @Test
+    public void givenUSStateCensusFile_WhenNotLoadedBeforSorting_ShouldThrowAnException() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            CensusDAO[] censusDAOS = new Gson().fromJson(censusAnalyser.
+                            sortDataToJSON("./src/test/resources/USCensusDataTotalAreaWise.json",
+                                    "total", false),
+                    CensusDAO[].class);
+        } catch (Exception e) {
+            Assert.assertEquals("NO ELEMENTS IN LIST TO SORT",e.getMessage());
         }
     }
 }
