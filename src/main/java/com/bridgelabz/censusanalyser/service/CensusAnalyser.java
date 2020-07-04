@@ -146,12 +146,17 @@ public class CensusAnalyser {
      * @throws CensusAnalyserException
      * @throws NoSuchFieldException
      */
-    public CensusDAO getMostDenseState(String censusCsvFilePathOfUS, String censusCsvFilePathOfIndia) throws CensusAnalyserException, NoSuchFieldException {
+    public CensusDAO getMostDenseState(String censusCsvFilePathOfUS, String censusCsvFilePathOfIndia)
+            throws CensusAnalyserException, NoSuchFieldException {
         this.loadStateCensusData(censusCsvFilePathOfIndia);
-        CensusDAO[] censusDAOIndia=new Gson().fromJson(this.sortDataToJSON("Test.json","densityPerSqKm",true),CensusDAO[].class);
+        CensusDAO[] censusDAOIndia=new Gson().fromJson(this.sortDataToJSON(
+                "./src/test/resources/IndiaStateCensusDataPopulationDensityWise.json",
+                 "densityPerSqKm",true),CensusDAO[].class);
         censusMap=new HashMap<>();
         this.loadUSCensusData(censusCsvFilePathOfUS);
-        CensusDAO[] censusDAOUS=new Gson().fromJson(this.sortDataToJSON("Test.json","populationDensity",true),CensusDAO[].class);
+        CensusDAO[] censusDAOUS=new Gson().fromJson(this.sortDataToJSON(
+                "./src/test/resources/USCensusDataPopulationDensityWise.json",
+                "populationDensity",true),CensusDAO[].class);
         if((double)censusDAOIndia[0].densityPerSqKm > censusDAOUS[0].populationDensity)
             return censusDAOIndia[0];
         return censusDAOUS[0];
