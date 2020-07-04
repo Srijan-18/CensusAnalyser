@@ -8,13 +8,21 @@ import java.util.Comparator;
 import java.util.List;
 
 public class CensusUtilities<T> {
+    /**
+     * TASK: To sort Input list according to given field name and order, then return the sorted list.
+     * @param listToSort
+     * @param fieldName
+     * @param sortInReverseOrder
+     * @return
+     * @throws NoSuchFieldException
+     */
     public List sortList(List listToSort,String fieldName, boolean sortInReverseOrder) throws NoSuchFieldException {
         if (sortInReverseOrder) {
             listToSort.sort(Comparator.comparing(report -> {
                 try {
                     return (Comparable) report.getClass().getDeclaredField(fieldName).get(report);
                 } catch (Exception e) {
-                    throw new RuntimeException("Ooops", e);
+                    throw new RuntimeException("INVALID FIELD", e);
                 }
             }).reversed());
             return listToSort;
@@ -23,7 +31,7 @@ public class CensusUtilities<T> {
             try {
                 return (Comparable) report.getClass().getDeclaredField(fieldName).get(report);
             } catch (Exception e) {
-                throw new RuntimeException("Ooops", e);
+                throw new RuntimeException("INVALID FIELD", e);
             }
         }));
         return listToSort;

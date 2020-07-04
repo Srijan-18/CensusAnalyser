@@ -129,17 +129,13 @@ public class CensusAnalyser {
      * @return
      * @throws CensusAnalyserException
      */
-    public String sortDataToJSON(String fileAdddress,String fieldName, boolean inReverseOrder) throws CensusAnalyserException {
+    public String sortDataToJSON(String fileAddress,String fieldName, boolean inReverseOrder)
+            throws CensusAnalyserException, NoSuchFieldException {
         this.checkEmpty(censusMap);
         CensusUtilities censusUtilities = new CensusUtilities<CensusDAO>();
-        try {
-            List sortedList = censusUtilities.sortList(this.getList(censusMap),fieldName,inReverseOrder);
-            censusUtilities.writeIntoJson(fileAdddress, sortedList);
-            return new Gson().toJson(sortedList);
-        } catch (NoSuchFieldException e) {
-            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.NO_SUCH_FIELD,
-                                                "FIELD NAME INVALID");
-        }
+        List sortedList = censusUtilities.sortList(this.getList(censusMap),fieldName,inReverseOrder);
+        censusUtilities.writeIntoJson(fileAddress, sortedList);
+        return new Gson().toJson(sortedList);
     }
 
     /**
