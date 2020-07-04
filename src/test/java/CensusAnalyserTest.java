@@ -327,6 +327,7 @@ public class CensusAnalyserTest {
             Assert.assertEquals("INVALID FIELD",e.getMessage());
         }
     }
+    
     @Test
     public void givenUSStateCensusFile_WhenNotLoadedBeforSorting_ShouldThrowAnException() {
         try {
@@ -338,5 +339,13 @@ public class CensusAnalyserTest {
         } catch (Exception e) {
             Assert.assertEquals("NO ELEMENTS IN LIST TO SORT",e.getMessage());
         }
+    }
+
+    @Test
+    public void givenUSAndIndiaCensusFile_ShouldReturnDataOfMostAsMostDenslyPopulousState() throws NoSuchFieldException, CensusAnalyserException {
+        CensusAnalyser censusAnalyser = new CensusAnalyser();
+        CensusDAO mostDenseStateData = censusAnalyser.
+                                        getMostDenseState(US_CENSUS_CSV_FILE_PATH,STATE_CENSUS_CSV_FILE_PATH);
+        Assert.assertEquals("District of Columbia",mostDenseStateData.stateName);
     }
 }
