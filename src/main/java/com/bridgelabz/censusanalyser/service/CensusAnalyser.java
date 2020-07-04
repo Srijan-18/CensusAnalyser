@@ -139,6 +139,25 @@ public class CensusAnalyser {
     }
 
     /**
+     * TASK: To return Data of most densely populated state among India and US.
+     * @param censusCsvFilePathOfUS
+     * @param censusCsvFilePathOfIndia
+     * @return censusDAO
+     * @throws CensusAnalyserException
+     * @throws NoSuchFieldException
+     */
+    public CensusDAO getMostDenseState(String censusCsvFilePathOfUS, String censusCsvFilePathOfIndia) throws CensusAnalyserException, NoSuchFieldException {
+        this.loadStateCensusData(censusCsvFilePathOfIndia);
+        CensusDAO[] censusDAOIndia=new Gson().fromJson(this.sortDataToJSON("Test.json","densityPerSqKm",true),CensusDAO[].class);
+        censusMap=new HashMap<>();
+        this.loadUSCensusData(censusCsvFilePathOfUS);
+        CensusDAO[] censusDAOUS=new Gson().fromJson(this.sortDataToJSON("Test.json","populationDensity",true),CensusDAO[].class);
+        if((double)censusDAOIndia[0].densityPerSqKm > censusDAOUS[0].populationDensity)
+            return censusDAOIndia[0];
+        return censusDAOUS[0];
+    }
+
+    /**
      * TASK: To check if list is empty , if empty throw custom exception.
      *
      * @param mapToCheck
