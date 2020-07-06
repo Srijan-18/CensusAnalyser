@@ -42,7 +42,7 @@ public class CensusUtilities<T> {
      * @param fileName
      * @param listToWrite
      */
-    public void writeIntoJson(String fileName,List listToWrite) {
+    public void writeIntoJson(String fileName, List listToWrite) {
         try (Writer writer = new FileWriter(fileName)) {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             gson.toJson(listToWrite, writer);
