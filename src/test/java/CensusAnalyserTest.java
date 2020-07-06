@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class CensusAnalyserTest {
+
     private static final String STATE_CENSUS_CSV_FILE_PATH = "./src/test/resources/IndiaStateCensusData.csv";
     private static final String STATE_CODE_CSV_FILE_PATH = "./src/test/resources/IndiaStateCode.csv";
     private static final String US_CENSUS_CSV_FILE_PATH = "./src/test/resources/USCensusData.csv";
@@ -121,7 +122,7 @@ public class CensusAnalyserTest {
     }
 
     @Test
-    public void givenStateCensusFile_WhenSortedInAlphabaticalOrder_ShouldReturnAndraPradeshAsFirstElement()
+    public void givenStateCensusFile_WhenSortedInAlphabeticalOrder_ShouldReturnAndraPradeshAsFirstElement()
                                                     throws NoSuchFieldException, CensusAnalyserException {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadStateCensusData(STATE_CENSUS_CSV_FILE_PATH);
@@ -133,7 +134,7 @@ public class CensusAnalyserTest {
     }
 
     @Test
-    public void givenStateCensusFile_WhenSortedInAlphabaticalOrder_ShouldReturnWestBengalAsLastElement()
+    public void givenStateCensusFile_WhenSortedInAlphabeticalOrder_ShouldReturnWestBengalAsLastElement()
                                                     throws NoSuchFieldException, CensusAnalyserException {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadStateCensusData(STATE_CENSUS_CSV_FILE_PATH);
@@ -300,6 +301,7 @@ public class CensusAnalyserTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void givenUSStateCensusFile_WhenInvalidFiledName_ShouldThrowAnException() {
         try {
@@ -329,7 +331,7 @@ public class CensusAnalyserTest {
     }
     
     @Test
-    public void givenUSStateCensusFile_WhenNotLoadedBeforSorting_ShouldThrowAnException() {
+    public void givenUSStateCensusFile_WhenNotLoadedBeforeSorting_ShouldThrowAnException() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             CensusDAO[] censusDAOS = new Gson().fromJson(censusAnalyser.
