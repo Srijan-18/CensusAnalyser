@@ -30,14 +30,17 @@ public class CensusAnalyser {
 
     /**
      * TASK: To load Census Data in Map and return size of map
-     * @param csvClass
+     * @param country
      * @param csvFilePath
      * @return size of Map
      * @throws CensusAnalyserException
      */
-    public int loadCensusData(Class csvClass, String... csvFilePath) throws CensusAnalyserException {
-     censusMap = new CensusLoader().loadCSVInMap(csvClass, csvFilePath);
-     return censusMap.size();
+    public int loadCensusData(Country country, String... csvFilePath) throws CensusAnalyserException {
+        if(country.equals(Country.INDIA))
+            censusMap = new CensusLoader().loadCSVInMap(IndiaStateCensusCSV.class, csvFilePath);
+        else if(country.equals(Country.US))
+            censusMap = new CensusLoader().loadCSVInMap(USCensusDataCSV.class, csvFilePath);
+        return censusMap.size();
  }
 
     /**
@@ -66,13 +69,13 @@ public class CensusAnalyser {
      */
     public String getMostDenseState(String censusCsvFilePathOfUS, String censusCsvFilePathOfIndia)
             throws CensusAnalyserException {
-        int a = this.loadCensusData(IndiaStateCensusCSV.class, censusCsvFilePathOfIndia);
+        int a = this.loadCensusData(Country.INDIA, censusCsvFilePathOfIndia);
         IndiaStateCensusCSV[] censusIndia = new Gson().fromJson(this.sorting(Country.INDIA,
                 SortAccordingTo.POPULATION_DENSITY,
                 "./src/test/resources/IndiaStateCensusDataPopulationDensityWise.json"),
                 IndiaStateCensusCSV[].class);
         censusMap=new HashMap<>();
-        this.loadCensusData(USCensusDataCSV.class, censusCsvFilePathOfUS);
+        this.loadCensusData(Country.US, censusCsvFilePathOfUS);
         USCensusDataCSV[] censusUS=new Gson().fromJson(this.sorting(Country.US, SortAccordingTo.POPULATION_DENSITY,
                 "./src/test/resources/USCensusDataPopulationDensityWise.json"), USCensusDataCSV[].class);
         if((double)censusIndia[0].densityPerSqKm > censusUS[0].populationDensity)
