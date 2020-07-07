@@ -47,10 +47,16 @@ public class CSVLoader {
                             .forEach(csvState -> censusMap.put(csvState.state, new CensusDAO(csvState)));
                     break;
                 case "IndiaStateCodeCSV" :
-                    StreamSupport.stream(censusIterable.spliterator(), false)
-                            .map(IndiaStateCodeCSV.class::cast)
-                            .forEach(csvState -> censusMap.put(csvState.stateName, new CensusDAO(csvState)));
-                break;
+                    censusMap = loadCSVInMap("./src/test/resources/IndiaStateCensusData.csv", IndiaStateCensusCSV.class);
+                    try (Reader codeReader = Files.newBufferedReader(Paths.get(filePath))) {
+                        Iterator<IndiaStateCodeCSV> stateCodeIterator = CSVBuilderFactory.createCSVBuilder()
+                                .getCSVFileIterator(codeReader, IndiaStateCodeCSV.class);
+                        Iterable<IndiaStateCodeCSV> codeCSVIterable = () -> stateCodeIterator;
+                        StreamSupport.stream(codeCSVIterable.spliterator(), false)
+                                .filter(csvState -> censusMap.get(csvState.stateName) != null)
+                                .forEach(csvState -> censusMap.get(csvState.stateName).stateCode = csvState.stateCode);
+                    }
+                    break;
                 default:
                     censusMap=null;
             }

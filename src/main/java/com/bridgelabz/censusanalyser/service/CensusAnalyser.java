@@ -3,22 +3,13 @@ package com.bridgelabz.censusanalyser.service;
 import com.bridgelabz.censusanalyser.exception.CensusAnalyserException;
 import com.bridgelabz.censusanalyser.model.CensusDAO;
 import com.bridgelabz.censusanalyser.model.IndiaStateCensusCSV;
-import com.bridgelabz.censusanalyser.model.IndiaStateCodeCSV;
 import com.bridgelabz.censusanalyser.model.USCensusDataCSV;
 import com.bridgelabz.censusanalyser.util.CSVLoader;
 import com.bridgelabz.censusanalyser.util.CensusUtilities;
 import com.google.gson.Gson;
-import csvbuilder.exception.CSVBuilderException;
-import csvbuilder.service.CSVBuilderFactory;
-import csvbuilder.service.ICSVBuilder;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 public class CensusAnalyser {
 
@@ -32,29 +23,16 @@ public class CensusAnalyser {
     }
 
     /**
-     * TASK: to generate count of entries in StateCensusCSV
-     *
+     * TASK: To load Census Data in Map and return size of map
      * @param csvFilePath
-     * @return count of entries in StateCensusCSV obtained from getCount
+     * @param csvClass
+     * @return size of Map
      * @throws CensusAnalyserException
      */
-    public int loadStateCensusData(String csvFilePath ) throws CensusAnalyserException {
-        censusMap = new CSVLoader().loadCSVInMap(csvFilePath, IndiaStateCensusCSV.class);
-        return censusMap.size();
-        }
-
-    /**
-     * TASK: to generate count of entries in StateCodeDataCSV
-     *
-     * @param csvFilePath
-     * @return count of entries in StateCodeDataCSV obtained from getCount
-     * @throws CensusAnalyserException
-     */
-    public int loadStateCodeData(String csvFilePath) throws CensusAnalyserException {
-        censusMap = new CSVLoader().loadCSVInMap(csvFilePath, IndiaStateCodeCSV.class);
-        return censusMap.size();
-    }
-
+    public int loadCensusData(String csvFilePath,Class csvClass) throws CensusAnalyserException {
+     censusMap = new CSVLoader().loadCSVInMap(csvFilePath, csvClass);
+     return censusMap.size();
+ }
     /**
      * TASK: to convert map to a list
      *
@@ -64,18 +42,6 @@ public class CensusAnalyser {
     private List getList(Map<String, CensusDAO> mapToConvert) {
         List<CensusDAO> censusList = mapToConvert.values().stream().collect(Collectors.toList());
         return censusList;
-    }
-
-    /**
-     * TASK: To Load USCensus Data File from given Path
-     *
-     * @param csvFilePath
-     * @return
-     * @throws CensusAnalyserException
-     */
-    public int loadUSCensusData(String csvFilePath) throws CensusAnalyserException {
-        censusMap = new CSVLoader().loadCSVInMap(csvFilePath, USCensusDataCSV.class);
-        return censusMap.size();
     }
 
     /**
@@ -104,16 +70,16 @@ public class CensusAnalyser {
      */
     public CensusDAO getMostDenseState(String censusCsvFilePathOfUS, String censusCsvFilePathOfIndia)
             throws CensusAnalyserException, NoSuchFieldException {
-        this.loadStateCensusData(censusCsvFilePathOfIndia);
+        this.loadCensusData(censusCsvFilePathOfIndia, IndiaStateCensusCSV.class);
         CensusDAO[] censusDAOIndia=new Gson().fromJson(this.sortDataToJSON(
                 "./src/test/resources/IndiaStateCensusDataPopulationDensityWise.json",
-                 "densityPerSqKm",true),CensusDAO[].class);
+                "populationDensity",true),CensusDAO[].class);
         censusMap=new HashMap<>();
-        this.loadUSCensusData(censusCsvFilePathOfUS);
+        this.loadCensusData(censusCsvFilePathOfUS,USCensusDataCSV.class);
         CensusDAO[] censusDAOUS=new Gson().fromJson(this.sortDataToJSON(
                 "./src/test/resources/USCensusDataPopulationDensityWise.json",
                 "populationDensity",true),CensusDAO[].class);
-        if((double)censusDAOIndia[0].densityPerSqKm > censusDAOUS[0].populationDensity)
+        if((double)censusDAOIndia[0].populationDensity > censusDAOUS[0].populationDensity)
             return censusDAOIndia[0];
         return censusDAOUS[0];
     }

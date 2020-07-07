@@ -3,7 +3,10 @@ package com.bridgelabz.censusanalyser.util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.*;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Comparator;
 import java.util.List;
 
@@ -16,7 +19,7 @@ public class CensusUtilities<T> {
      * @return
      * @throws NoSuchFieldException
      */
-    public List sortList(List listToSort,String fieldName, boolean sortInReverseOrder) throws NoSuchFieldException {
+    public List sortList(List listToSort, String fieldName, boolean sortInReverseOrder) {
         if (sortInReverseOrder) {
             listToSort.sort(Comparator.comparing(report -> {
                 try {
