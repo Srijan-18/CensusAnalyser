@@ -1,7 +1,7 @@
 package com.bridgelabz.censusanalyser.util;
 
 import com.bridgelabz.censusanalyser.exception.CensusAnalyserException;
-import com.bridgelabz.censusanalyser.model.CensusDAO;
+import com.bridgelabz.censusanalyser.dao.CensusDAO;
 import com.bridgelabz.censusanalyser.model.IndiaStateCensusCSV;
 import com.bridgelabz.censusanalyser.model.IndiaStateCodeCSV;
 import com.bridgelabz.censusanalyser.model.USCensusDataCSV;
@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.StreamSupport;
 
-public class CSVLoader {
+public class CensusLoader {
     Map<String, CensusDAO> censusMap = new HashMap();
 
     /**
@@ -32,7 +32,7 @@ public class CSVLoader {
     public <T> Map loadCSVInMap(String filePath, Class<T> censusCSVClass) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(filePath));) {
             ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
-            Iterator<T>  censusIterator = csvBuilder.getCSVFileIterator(reader, censusCSVClass);
+            Iterator<T> censusIterator = csvBuilder.getCSVFileIterator(reader, censusCSVClass);
             Iterable<T> censusIterable = () -> censusIterator;
             switch (censusCSVClass.getSimpleName())
             {
@@ -47,7 +47,8 @@ public class CSVLoader {
                             .forEach(csvState -> censusMap.put(csvState.state, new CensusDAO(csvState)));
                     break;
                 case "IndiaStateCodeCSV" :
-                    censusMap = loadCSVInMap("./src/test/resources/IndiaStateCensusData.csv", IndiaStateCensusCSV.class);
+                    String stateFilePath = "./src/test/resources/IndiaStateCensusData.csv";
+                    censusMap = loadCSVInMap(stateFilePath, IndiaStateCensusCSV.class);
                     try (Reader codeReader = Files.newBufferedReader(Paths.get(filePath))) {
                         Iterator<IndiaStateCodeCSV> stateCodeIterator = CSVBuilderFactory.createCSVBuilder()
                                 .getCSVFileIterator(codeReader, IndiaStateCodeCSV.class);

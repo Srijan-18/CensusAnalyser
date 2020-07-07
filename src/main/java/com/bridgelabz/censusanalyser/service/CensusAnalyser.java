@@ -1,12 +1,16 @@
 package com.bridgelabz.censusanalyser.service;
 
 import com.bridgelabz.censusanalyser.exception.CensusAnalyserException;
-import com.bridgelabz.censusanalyser.model.CensusDAO;
+import com.bridgelabz.censusanalyser.dao.CensusDAO;
 import com.bridgelabz.censusanalyser.model.IndiaStateCensusCSV;
 import com.bridgelabz.censusanalyser.model.USCensusDataCSV;
-import com.bridgelabz.censusanalyser.util.CSVLoader;
+import com.bridgelabz.censusanalyser.util.CensusLoader;
 import com.bridgelabz.censusanalyser.util.CensusUtilities;
+import com.bridgelabz.censusanalyser.util.Country;
+import com.bridgelabz.censusanalyser.util.SortData;
+import com.bridgelabz.censusanalyser.util.SortData.SortAccordingTo;
 import com.google.gson.Gson;
+
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,34 +33,25 @@ public class CensusAnalyser {
      * @return size of Map
      * @throws CensusAnalyserException
      */
-    public int loadCensusData(String csvFilePath,Class csvClass) throws CensusAnalyserException {
-     censusMap = new CSVLoader().loadCSVInMap(csvFilePath, csvClass);
+    public int loadCensusData(String csvFilePath, Class csvClass) throws CensusAnalyserException {
+     censusMap = new CensusLoader().loadCSVInMap(csvFilePath, csvClass);
      return censusMap.size();
  }
-    /**
-     * TASK: to convert map to a list
-     *
-     * @param mapToConvert
-     * @return list
-     */
-    private List getList(Map<String, CensusDAO> mapToConvert) {
-        List<CensusDAO> censusList = mapToConvert.values().stream().collect(Collectors.toList());
-        return censusList;
-    }
 
     /**
      * TASK: to take field name and order of sorting and save file and return sorted list in json format.
-     * @param fieldName
-     * @param inReverseOrder
-     * @return
-     * @throws CensusAnalyserException
+     * @param country
+     * @param field
+     * @param jsonLocation
+     * @return string of data in json format
      */
-    public String sortDataToJSON(String fileAddress, String fieldName, boolean inReverseOrder)
-            throws CensusAnalyserException, NoSuchFieldException {
+    public String sorting(Country country, SortAccordingTo field, String jsonLocation) throws CensusAnalyserException {
         this.checkEmpty(censusMap);
-        CensusUtilities censusUtilities = new CensusUtilities<CensusDAO>();
-        List sortedList = censusUtilities.sortList(this.getList(censusMap), fieldName, inReverseOrder);
-        censusUtilities.writeIntoJson(fileAddress, sortedList);
+        List sortedList = censusMap.values().stream()
+                .sorted(new SortData().getComparator(field))
+                .map(censusDAO -> censusDAO.getCensusDTO(country))
+                .collect(Collectors.toCollection(ArrayList::new));
+        new CensusUtilities().writeIntoJson(jsonLocation, sortedList);
         return new Gson().toJson(sortedList);
     }
 
@@ -66,22 +61,21 @@ public class CensusAnalyser {
      * @param censusCsvFilePathOfIndia
      * @return censusDAO
      * @throws CensusAnalyserException
-     * @throws NoSuchFieldException
      */
-    public CensusDAO getMostDenseState(String censusCsvFilePathOfUS, String censusCsvFilePathOfIndia)
-            throws CensusAnalyserException, NoSuchFieldException {
-        this.loadCensusData(censusCsvFilePathOfIndia, IndiaStateCensusCSV.class);
-        CensusDAO[] censusDAOIndia=new Gson().fromJson(this.sortDataToJSON(
-                "./src/test/resources/IndiaStateCensusDataPopulationDensityWise.json",
-                "populationDensity",true),CensusDAO[].class);
+    public String getMostDenseState(String censusCsvFilePathOfUS, String censusCsvFilePathOfIndia)
+            throws CensusAnalyserException {
+        int a = this.loadCensusData(censusCsvFilePathOfIndia, IndiaStateCensusCSV.class);
+        IndiaStateCensusCSV[] censusIndia = new Gson().fromJson(this.sorting(Country.INDIA,
+                SortAccordingTo.POPULATION_DENSITY,
+                "./src/test/resources/IndiaStateCensusDataPopulationDensityWise.json"),
+                IndiaStateCensusCSV[].class);
         censusMap=new HashMap<>();
-        this.loadCensusData(censusCsvFilePathOfUS,USCensusDataCSV.class);
-        CensusDAO[] censusDAOUS=new Gson().fromJson(this.sortDataToJSON(
-                "./src/test/resources/USCensusDataPopulationDensityWise.json",
-                "populationDensity",true),CensusDAO[].class);
-        if((double)censusDAOIndia[0].populationDensity > censusDAOUS[0].populationDensity)
-            return censusDAOIndia[0];
-        return censusDAOUS[0];
+        this.loadCensusData(censusCsvFilePathOfUS, USCensusDataCSV.class);
+        USCensusDataCSV[] censusUS=new Gson().fromJson(this.sorting(Country.US, SortAccordingTo.POPULATION_DENSITY,
+                "./src/test/resources/USCensusDataPopulationDensityWise.json"), USCensusDataCSV[].class);
+        if((double)censusIndia[0].densityPerSqKm > censusUS[0].populationDensity)
+            return censusIndia[0].state;
+        return censusUS[0].state;
     }
 
     /**
