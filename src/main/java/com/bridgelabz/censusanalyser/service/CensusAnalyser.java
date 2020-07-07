@@ -11,8 +11,10 @@ import com.bridgelabz.censusanalyser.util.SortData;
 import com.bridgelabz.censusanalyser.util.SortData.SortAccordingTo;
 import com.google.gson.Gson;
 
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CensusAnalyser {
@@ -28,13 +30,13 @@ public class CensusAnalyser {
 
     /**
      * TASK: To load Census Data in Map and return size of map
-     * @param csvFilePath
      * @param csvClass
+     * @param csvFilePath
      * @return size of Map
      * @throws CensusAnalyserException
      */
-    public int loadCensusData(String csvFilePath, Class csvClass) throws CensusAnalyserException {
-     censusMap = new CensusLoader().loadCSVInMap(csvFilePath, csvClass);
+    public int loadCensusData(Class csvClass, String... csvFilePath) throws CensusAnalyserException {
+     censusMap = new CensusLoader().loadCSVInMap(csvClass, csvFilePath);
      return censusMap.size();
  }
 
@@ -64,13 +66,13 @@ public class CensusAnalyser {
      */
     public String getMostDenseState(String censusCsvFilePathOfUS, String censusCsvFilePathOfIndia)
             throws CensusAnalyserException {
-        int a = this.loadCensusData(censusCsvFilePathOfIndia, IndiaStateCensusCSV.class);
+        int a = this.loadCensusData(IndiaStateCensusCSV.class, censusCsvFilePathOfIndia);
         IndiaStateCensusCSV[] censusIndia = new Gson().fromJson(this.sorting(Country.INDIA,
                 SortAccordingTo.POPULATION_DENSITY,
                 "./src/test/resources/IndiaStateCensusDataPopulationDensityWise.json"),
                 IndiaStateCensusCSV[].class);
         censusMap=new HashMap<>();
-        this.loadCensusData(censusCsvFilePathOfUS, USCensusDataCSV.class);
+        this.loadCensusData(USCensusDataCSV.class, censusCsvFilePathOfUS);
         USCensusDataCSV[] censusUS=new Gson().fromJson(this.sorting(Country.US, SortAccordingTo.POPULATION_DENSITY,
                 "./src/test/resources/USCensusDataPopulationDensityWise.json"), USCensusDataCSV[].class);
         if((double)censusIndia[0].densityPerSqKm > censusUS[0].populationDensity)

@@ -6,9 +6,14 @@ import java.util.Comparator;
 
 public class SortData {
     public enum SortAccordingTo {
-        STATE_NAME,POPULATION,POPULATION_DENSITY,TOTAL_AREA, STATE_CODE;
+        STATE_NAME, POPULATION, POPULATION_DENSITY, TOTAL_AREA, STATE_CODE;
     }
 
+    /**
+     * TASK: to provide Comparator according to Field.
+     * @param field
+     * @return
+     */
     public Comparator<CensusDAO> getComparator(SortAccordingTo field) {
         switch (field) {
             case STATE_NAME:
