@@ -36,11 +36,8 @@ public class CensusAnalyser {
      * @throws CensusAnalyserException
      */
     public int loadCensusData(Country country, String... csvFilePath) throws CensusAnalyserException {
-        if(country.equals(Country.INDIA))
-            censusMap = new CensusLoader().loadCSVInMap(IndiaStateCensusCSV.class, csvFilePath);
-        else if(country.equals(Country.US))
-            censusMap = new CensusLoader().loadCSVInMap(USCensusDataCSV.class, csvFilePath);
-        return censusMap.size();
+            censusMap = new CensusLoader().loadCensusData(country, csvFilePath);
+            return censusMap.size();
  }
 
     /**

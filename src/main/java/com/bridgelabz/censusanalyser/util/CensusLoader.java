@@ -22,6 +22,13 @@ import java.util.stream.StreamSupport;
 public class CensusLoader {
     Map<String, CensusDAO> censusMap = new HashMap();
 
+    public Map loadCensusData(Country country, String... filePath) throws CensusAnalyserException {
+        if(country.equals(Country.INDIA))
+            return this.loadCSVInMap(IndiaStateCensusCSV.class, filePath);
+        else if(country.equals(Country.US))
+            return this.loadCSVInMap(USCensusDataCSV.class, filePath);
+        else return null;
+    }
     /**
      * TASK: to load given census file in a map and return the loaded map
      * @param censusCSVClass
