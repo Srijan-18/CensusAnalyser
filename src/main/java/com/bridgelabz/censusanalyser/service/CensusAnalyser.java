@@ -1,10 +1,10 @@
 package com.bridgelabz.censusanalyser.service;
 
+import com.bridgelabz.censusanalyser.adapter.CensusAdapterFactory;
 import com.bridgelabz.censusanalyser.exception.CensusAnalyserException;
 import com.bridgelabz.censusanalyser.dao.CensusDAO;
 import com.bridgelabz.censusanalyser.model.IndiaStateCensusCSV;
 import com.bridgelabz.censusanalyser.model.USCensusDataCSV;
-import com.bridgelabz.censusanalyser.util.CensusLoader;
 import com.bridgelabz.censusanalyser.util.CensusUtilities;
 import com.bridgelabz.censusanalyser.util.Country;
 import com.bridgelabz.censusanalyser.util.SortData;
@@ -36,7 +36,7 @@ public class CensusAnalyser {
      * @throws CensusAnalyserException
      */
     public int loadCensusData(Country country, String... csvFilePath) throws CensusAnalyserException {
-            censusMap = new CensusLoader().loadCensusData(country, csvFilePath);
+            censusMap = CensusAdapterFactory.getCensusAdapter(country, csvFilePath);
             return censusMap.size();
  }
 

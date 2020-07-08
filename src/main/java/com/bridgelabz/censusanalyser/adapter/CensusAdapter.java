@@ -1,10 +1,11 @@
-package com.bridgelabz.censusanalyser.util;
+package com.bridgelabz.censusanalyser.adapter;
 
-import com.bridgelabz.censusanalyser.exception.CensusAnalyserException;
 import com.bridgelabz.censusanalyser.dao.CensusDAO;
+import com.bridgelabz.censusanalyser.exception.CensusAnalyserException;
 import com.bridgelabz.censusanalyser.model.IndiaStateCensusCSV;
 import com.bridgelabz.censusanalyser.model.IndiaStateCodeCSV;
 import com.bridgelabz.censusanalyser.model.USCensusDataCSV;
+import com.bridgelabz.censusanalyser.util.Country;
 import csvbuilder.exception.CSVBuilderException;
 import csvbuilder.service.CSVBuilderFactory;
 import csvbuilder.service.ICSVBuilder;
@@ -19,16 +20,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.StreamSupport;
 
-public class CensusLoader {
+public abstract class CensusAdapter {
+
     Map<String, CensusDAO> censusMap = new HashMap();
 
-    public Map loadCensusData(Country country, String... filePath) throws CensusAnalyserException {
-        if(country.equals(Country.INDIA))
-            return this.loadCSVInMap(IndiaStateCensusCSV.class, filePath);
-        else if(country.equals(Country.US))
-            return this.loadCSVInMap(USCensusDataCSV.class, filePath);
-        else return null;
-    }
+    public abstract Map loadCensusData(String... filePath) throws CensusAnalyserException;
+
     /**
      * TASK: to load given census file in a map and return the loaded map
      * @param censusCSVClass
@@ -36,8 +33,8 @@ public class CensusLoader {
      * @return map loaded with census
      * @throws CensusAnalyserException
      */
-    public <T> Map loadCSVInMap(Class<T> censusCSVClass, String... filePath) throws CensusAnalyserException {
-        try (Reader reader = Files.newBufferedReader(Paths.get(filePath[0]));) {
+    public   <T> Map loadCSVInMap(Class<T> censusCSVClass, String... filePath) throws CensusAnalyserException {
+        try (Reader reader = Files.newBufferedReader(Paths.get(filePath[0]))) {
             ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<T> censusIterator = csvBuilder.getCSVFileIterator(reader, censusCSVClass);
             Iterable<T> censusIterable = () -> censusIterator;
@@ -55,10 +52,10 @@ public class CensusLoader {
                             StreamSupport.stream(codeCSVIterable.spliterator(), false)
                                     .filter(csvState -> censusMap.get(csvState.stateName) != null)
                                     .forEach(csvState -> censusMap.get(csvState.stateName)
-                                                                        .stateCode = csvState.stateCode);
+                                            .stateCode = csvState.stateCode);
                         }
                     }
-                    break;
+                        break;
                 case "USCensusDataCSV" :
                     StreamSupport.stream(censusIterable.spliterator(), false)
                             .map(USCensusDataCSV.class::cast)
