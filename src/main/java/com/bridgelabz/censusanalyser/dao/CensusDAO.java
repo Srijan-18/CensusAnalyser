@@ -8,7 +8,6 @@ import com.bridgelabz.censusanalyser.util.Country;
 public class CensusDAO {
     public String stateName;
     public String stateCode;
-
     public String stateId;
     public Double totalArea;
     public Double populationDensity;
@@ -50,6 +49,11 @@ public class CensusDAO {
         stateId = usCensusDataCSV.stateId;
     }
 
+    /**
+     * TASK: To return DTO according to country Input.
+     * @param country
+     * @return
+     */
     public Object getCensusDTO(Country country) {
         switch (country) {
             case INDIA:

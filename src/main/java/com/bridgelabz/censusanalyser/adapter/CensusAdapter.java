@@ -5,7 +5,6 @@ import com.bridgelabz.censusanalyser.exception.CensusAnalyserException;
 import com.bridgelabz.censusanalyser.model.IndiaStateCensusCSV;
 import com.bridgelabz.censusanalyser.model.IndiaStateCodeCSV;
 import com.bridgelabz.censusanalyser.model.USCensusDataCSV;
-import com.bridgelabz.censusanalyser.util.Country;
 import csvbuilder.exception.CSVBuilderException;
 import csvbuilder.service.CSVBuilderFactory;
 import csvbuilder.service.ICSVBuilder;
@@ -24,6 +23,12 @@ public abstract class CensusAdapter {
 
     Map<String, CensusDAO> censusMap = new HashMap();
 
+    /**
+     * Abstract method which is to be implemented in respective adapter classes to load data.
+     * @param filePath
+     * @return
+     * @throws CensusAnalyserException
+     */
     public abstract Map loadCensusData(String... filePath) throws CensusAnalyserException;
 
     /**
@@ -33,7 +38,7 @@ public abstract class CensusAdapter {
      * @return map loaded with census
      * @throws CensusAnalyserException
      */
-    public   <T> Map loadCSVInMap(Class<T> censusCSVClass, String... filePath) throws CensusAnalyserException {
+    public <T> Map loadCSVInMap(Class<T> censusCSVClass, String... filePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(filePath[0]))) {
             ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<T> censusIterator = csvBuilder.getCSVFileIterator(reader, censusCSVClass);
@@ -52,7 +57,7 @@ public abstract class CensusAdapter {
                             StreamSupport.stream(codeCSVIterable.spliterator(), false)
                                     .filter(csvState -> censusMap.get(csvState.stateName) != null)
                                     .forEach(csvState -> censusMap.get(csvState.stateName)
-                                            .stateCode = csvState.stateCode);
+                                                                  .stateCode = csvState.stateCode);
                         }
                     }
                         break;
